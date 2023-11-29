@@ -1,0 +1,47 @@
+﻿@model IEnumerable<Kursach_Voenkomat.Models.ОбразовательныеОрганизации>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Наименование_образовательной_организации)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Адрес_образовательной_организации)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.типОбразовательнойОрганизации)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Наименование_образовательной_организации)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Адрес_образовательной_организации)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.типОбразовательнойОрганизации.Наименование_типа_образовательной_организации)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ID_образовательной_организации">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ID_образовательной_организации">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ID_образовательной_организации">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

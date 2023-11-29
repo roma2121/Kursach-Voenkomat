@@ -1,0 +1,48 @@
+﻿@model Kursach_Voenkomat.Models.ПрофессиональноПсихологическиеПоказателиГраждан
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>ПрофессиональноПсихологическиеПоказателиГраждан</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Познавательные_способности)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Познавательные_способности)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Адаптационные_способности)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Адаптационные_способности)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Призывник)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ПризывникФИО)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.категорияПрофессиональнойПригодности)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.категорияПрофессиональнойПригодности.Категории_профессиональной_пригодности)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.военноПрофессиональнаяНаправленность)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.военноПрофессиональнаяНаправленность.Наименование_военно_профессиональной_направленности)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.ID_ПП_показателей">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

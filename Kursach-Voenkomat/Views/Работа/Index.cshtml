@@ -1,0 +1,35 @@
+﻿@model IEnumerable<Kursach_Voenkomat.Models.Работа>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Место_работы)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Место_работы)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ID_работы">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ID_работы">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ID_работы">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

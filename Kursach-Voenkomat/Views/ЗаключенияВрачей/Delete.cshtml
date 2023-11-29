@@ -1,0 +1,57 @@
+﻿@model Kursach_Voenkomat.Models.ЗаключенияВрачей
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>ЗаключенияВрачей</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Призывник)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ПризывникФИО)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Заключение)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Заключение)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Предварительный_диагноз)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Предварительный_диагноз)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Категория)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Категория.Наименование_категории)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Врач)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ВрачФИО)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Дата_выписки_заключения)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Дата_выписки_заключения)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="ID_заключения" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>

@@ -1,0 +1,60 @@
+﻿@model Kursach_Voenkomat.Models.Паспорта
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Паспорта</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Призывник)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ПризывникФИО)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Серия)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Серия)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Номер)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Номер)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Дата_выдачи)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Дата_выдачи)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Кем_выдан)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Кем_выдан)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Место_рождения)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Место_рождения)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Адрес_прописки)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Адрес_прописки)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.ID_паспорта">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

@@ -1,0 +1,66 @@
+﻿@model IEnumerable<Kursach_Voenkomat.Models.Образование>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Призывник)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Номер_документа_об_образовании)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.уровеньОбразования)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Специальность)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Дата_окончания)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.образовательнаяОрганизация)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ПризывникФИО)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Номер_документа_об_образовании)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.уровеньОбразования.Наименование_уровня_образования)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Специальность)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Дата_окончания)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.образовательнаяОрганизация.Наименование_образовательной_организации)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ID_записи_об_образовании">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.ID_записи_об_образовании">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.ID_записи_об_образовании">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

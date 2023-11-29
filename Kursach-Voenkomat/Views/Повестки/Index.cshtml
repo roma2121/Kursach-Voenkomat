@@ -1,0 +1,59 @@
+﻿@model IEnumerable<Kursach_Voenkomat.Models.Повестки>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Дата_выписки)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Дата_явки)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Призывник)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.типПовестки)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.статусЯвки)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Дата_выписки)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Дата_явки)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ПризывникФИО)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.типПовестки.Тип_повестки)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.статусЯвки.Наименование_статуса_явки)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ID_повестки">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ID_повестки">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ID_повестки">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

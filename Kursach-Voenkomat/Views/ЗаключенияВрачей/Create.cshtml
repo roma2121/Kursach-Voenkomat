@@ -1,0 +1,55 @@
+﻿@model Kursach_Voenkomat.Models.ЗаключенияВрачей
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>ЗаключенияВрачей</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ID_призывника" class="control-label"></label>
+                <select asp-for="ID_призывника" class ="form-control" asp-items="ViewBag.ID_призывника"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Заключение" class="control-label"></label>
+                <input asp-for="Заключение" class="form-control" />
+                <span asp-validation-for="Заключение" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Предварительный_диагноз" class="control-label"></label>
+                <input asp-for="Предварительный_диагноз" class="form-control" />
+                <span asp-validation-for="Предварительный_диагноз" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ID_категории_годности" class="control-label"></label>
+                <select asp-for="ID_категории_годности" class="form-control" asp-items="ViewBag.ID_категории_годности"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="ID_врача" class="control-label"></label>
+                <select asp-for="ID_врача" class="form-control" asp-items="ViewBag.ID_врача"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Дата_выписки_заключения" class="control-label"></label>
+                <input asp-for="Дата_выписки_заключения" class="form-control" />
+                <span asp-validation-for="Дата_выписки_заключения" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

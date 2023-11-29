@@ -1,0 +1,15 @@
+﻿@model List<TableInfo>
+
+<div class="text-center">
+    <h2>Список таблиц</h2>
+</div>
+
+<ul class="table-list">
+    @foreach (var table in Model)
+    {
+        <li>
+            <span class="marker">&#8226;</span>
+            <a class="table-link" asp-controller="Home" asp-action="RedirectToTable" asp-route-tableName="@table.TableName">@table.DisplayName</a>
+        </li>
+    }
+</ul>

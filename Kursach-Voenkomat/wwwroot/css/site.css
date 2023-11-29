@@ -1,0 +1,44 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+.table-list {
+    list-style: none;
+    padding: 0;
+}
+
+    .table-list li {
+        margin-bottom: 10px;
+    }
+
+.marker {
+    color: black; /* Измените цвет маркера на черный */
+    font-size: 1.2em; /* Размер маркера */
+    margin-right: 5px; /* Отступ справа от маркера */
+}
+
+.table-link {
+    text-decoration: none;
+    color: #007bff; /* Цвет ссылки */
+    font-weight: bold; /* Жирный текст */
+    transition: color 0.3s; /* Плавный переход цвета при наведении */
+}
+
+.table-link:hover {
+    color: #0056b3; /* Цвет ссылки при наведении */
+}

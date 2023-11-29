@@ -1,0 +1,47 @@
+﻿@model IEnumerable<Kursach_Voenkomat.Models.РешенияКомиссии>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Дата_вынесения_решения)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Решение)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Призывник)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Дата_вынесения_решения)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Решение)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ПризывникФИО)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ID_решения">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ID_решения">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ID_решения">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

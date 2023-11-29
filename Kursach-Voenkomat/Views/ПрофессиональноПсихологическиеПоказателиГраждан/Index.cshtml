@@ -1,0 +1,59 @@
+﻿@model IEnumerable<Kursach_Voenkomat.Models.ПрофессиональноПсихологическиеПоказателиГраждан>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Познавательные_способности)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Адаптационные_способности)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Призывник)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.категорияПрофессиональнойПригодности)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.военноПрофессиональнаяНаправленность)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Познавательные_способности)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Адаптационные_способности)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ПризывникФИО)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.категорияПрофессиональнойПригодности.Категории_профессиональной_пригодности)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.военноПрофессиональнаяНаправленность.Наименование_военно_профессиональной_направленности)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ID_ПП_показателей">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ID_ПП_показателей">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ID_ПП_показателей">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

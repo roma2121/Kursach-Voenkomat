@@ -1,0 +1,49 @@
+﻿@model Kursach_Voenkomat.Models.МедицинскиеДокументы
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>МедицинскиеДокументы</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ID_медицинского_документа" />
+            <div class="form-group">
+                <label asp-for="ID_призывника" class="control-label"></label>
+                <select asp-for="ID_призывника" class="form-control" asp-items="ViewBag.ID_призывника"></select>
+                <span asp-validation-for="ID_призывника" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Диагноз" class="control-label"></label>
+                <input asp-for="Диагноз" class="form-control" />
+                <span asp-validation-for="Диагноз" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Наименование_медицинской_организации" class="control-label"></label>
+                <input asp-for="Наименование_медицинской_организации" class="form-control" />
+                <span asp-validation-for="Наименование_медицинской_организации" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Дата_выписки_медицинского_заключения" class="control-label"></label>
+                <input asp-for="Дата_выписки_медицинского_заключения" class="form-control" />
+                <span asp-validation-for="Дата_выписки_медицинского_заключения" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
