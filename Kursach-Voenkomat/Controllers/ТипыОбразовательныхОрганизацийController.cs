@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Kursach_Voenkomat.Data;
 using Kursach_Voenkomat.Models;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace Kursach_Voenkomat
 {
@@ -14,22 +16,42 @@ namespace Kursach_Voenkomat
     {
         private readonly ApplicationDbContext _context;
 
-        public ТипыОбразовательныхОрганизацийController(ApplicationDbContext context)
+        private readonly IAuditService _auditService;
+
+        public ТипыОбразовательныхОрганизацийController(ApplicationDbContext context, IAuditService auditService)
         {
             _context = context;
+            _auditService = auditService;
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult AccessDenied()
+        {
+            return View("AccessDenied"); // Отображение страницы с сообщением об отказе в доступе
         }
 
         // GET: ТипыОбразовательныхОрганизаций
+        [Authorize(Roles = "voenkomat_worker, MO, Administrator")]
         public async Task<IActionResult> Index()
         {
-              return _context.ТипыОбразовательныхОрганизаций != null ? 
+            string userName = User.Identity.Name;
+            string role = User.FindFirst(ClaimsIdentity.DefaultRoleClaimType)?.Value;
+            _auditService.LogAction(userName, role, "SELECT", "ТипыОбразовательныхОрганизаций");
+
+            return _context.ТипыОбразовательныхОрганизаций != null ? 
                           View(await _context.ТипыОбразовательныхОрганизаций.ToListAsync()) :
                           Problem("Entity set 'ApplicationDbContext.ТипыОбразовательныхОрганизаций'  is null.");
         }
 
         // GET: ТипыОбразовательныхОрганизаций/Details/5
+        [Authorize(Roles = "voenkomat_worker, MO, Administrator")]
         public async Task<IActionResult> Details(int? id)
         {
+            string userName = User.Identity.Name;
+            string role = User.FindFirst(ClaimsIdentity.DefaultRoleClaimType)?.Value;
+            _auditService.LogAction(userName, role, "DETAILS", "ТипыОбразовательныхОрганизаций");
+
             if (id == null || _context.ТипыОбразовательныхОрганизаций == null)
             {
                 return NotFound();
@@ -46,8 +68,13 @@ namespace Kursach_Voenkomat
         }
 
         // GET: ТипыОбразовательныхОрганизаций/Create
+        [Authorize(Roles = "Administrator")]
         public IActionResult Create()
         {
+            string userName = User.Identity.Name;
+            string role = User.FindFirst(ClaimsIdentity.DefaultRoleClaimType)?.Value;
+            _auditService.LogAction(userName, role, "INSERT", "ТипыОбразовательныхОрганизаций");
+
             return View();
         }
 
@@ -68,8 +95,13 @@ namespace Kursach_Voenkomat
         }
 
         // GET: ТипыОбразовательныхОрганизаций/Edit/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Edit(int? id)
         {
+            string userName = User.Identity.Name;
+            string role = User.FindFirst(ClaimsIdentity.DefaultRoleClaimType)?.Value;
+            _auditService.LogAction(userName, role, "UPDATE", "ТипыОбразовательныхОрганизаций");
+
             if (id == null || _context.ТипыОбразовательныхОрганизаций == null)
             {
                 return NotFound();
@@ -119,8 +151,13 @@ namespace Kursach_Voenkomat
         }
 
         // GET: ТипыОбразовательныхОрганизаций/Delete/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Delete(int? id)
         {
+            string userName = User.Identity.Name;
+            string role = User.FindFirst(ClaimsIdentity.DefaultRoleClaimType)?.Value;
+            _auditService.LogAction(userName, role, "DELETE", "ТипыОбразовательныхОрганизаций");
+
             if (id == null || _context.ТипыОбразовательныхОрганизаций == null)
             {
                 return NotFound();

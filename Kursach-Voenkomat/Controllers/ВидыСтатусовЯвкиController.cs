@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Kursach_Voenkomat.Data;
 using Kursach_Voenkomat.Models;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace Kursach_Voenkomat
 {
@@ -14,22 +11,42 @@ namespace Kursach_Voenkomat
     {
         private readonly ApplicationDbContext _context;
 
-        public ВидыСтатусовЯвкиController(ApplicationDbContext context)
+        private readonly IAuditService _auditService;
+
+        public ВидыСтатусовЯвкиController(ApplicationDbContext context, IAuditService auditService)
         {
             _context = context;
+            _auditService = auditService;
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult AccessDenied()
+        {
+            return View("AccessDenied"); // Отображение страницы с сообщением об отказе в доступе
         }
 
         // GET: ВидыСтатусовЯвки
+        [Authorize(Roles = "voenkomat_worker, MO, Administrator")]
         public async Task<IActionResult> Index()
         {
-              return _context.ВидыСтатусовЯвки != null ? 
+            string userName = User.Identity.Name;
+            string role = User.FindFirst(ClaimsIdentity.DefaultRoleClaimType)?.Value;
+            _auditService.LogAction(userName, role, "SELECT", "ВидыСтатусовЯвки");
+
+            return _context.ВидыСтатусовЯвки != null ? 
                           View(await _context.ВидыСтатусовЯвки.ToListAsync()) :
                           Problem("Entity set 'ApplicationDbContext.ВидыСтатусовЯвки'  is null.");
         }
 
         // GET: ВидыСтатусовЯвки/Details/5
+        [Authorize(Roles = "MO, Administrator")]
         public async Task<IActionResult> Details(int? id)
         {
+            string userName = User.Identity.Name;
+            string role = User.FindFirst(ClaimsIdentity.DefaultRoleClaimType)?.Value;
+            _auditService.LogAction(userName, role, "DETAILS", "ВидыСтатусовЯвки");
+
             if (id == null || _context.ВидыСтатусовЯвки == null)
             {
                 return NotFound();
@@ -46,8 +63,13 @@ namespace Kursach_Voenkomat
         }
 
         // GET: ВидыСтатусовЯвки/Create
+        [Authorize(Roles = "MO, Administrator")]
         public IActionResult Create()
         {
+            string userName = User.Identity.Name;
+            string role = User.FindFirst(ClaimsIdentity.DefaultRoleClaimType)?.Value;
+            _auditService.LogAction(userName, role, "INSERT", "ВидыСтатусовЯвки");
+
             return View();
         }
 
@@ -68,8 +90,13 @@ namespace Kursach_Voenkomat
         }
 
         // GET: ВидыСтатусовЯвки/Edit/5
+        [Authorize(Roles = "MO, Administrator")]
         public async Task<IActionResult> Edit(int? id)
         {
+            string userName = User.Identity.Name;
+            string role = User.FindFirst(ClaimsIdentity.DefaultRoleClaimType)?.Value;
+            _auditService.LogAction(userName, role, "UPDATE", "ВидыСтатусовЯвки");
+
             if (id == null || _context.ВидыСтатусовЯвки == null)
             {
                 return NotFound();
@@ -119,8 +146,13 @@ namespace Kursach_Voenkomat
         }
 
         // GET: ВидыСтатусовЯвки/Delete/5
+        [Authorize(Roles = "MO, Administrator")]
         public async Task<IActionResult> Delete(int? id)
         {
+            string userName = User.Identity.Name;
+            string role = User.FindFirst(ClaimsIdentity.DefaultRoleClaimType)?.Value;
+            _auditService.LogAction(userName, role, "DELETE", "ВидыСтатусовЯвки");
+
             if (id == null || _context.ВидыСтатусовЯвки == null)
             {
                 return NotFound();

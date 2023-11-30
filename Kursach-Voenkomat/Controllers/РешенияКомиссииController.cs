@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Kursach_Voenkomat.Data;
 using Kursach_Voenkomat.Models;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace Kursach_Voenkomat
 {
@@ -14,21 +12,41 @@ namespace Kursach_Voenkomat
     {
         private readonly ApplicationDbContext _context;
 
-        public РешенияКомиссииController(ApplicationDbContext context)
+        private readonly IAuditService _auditService;
+
+        public РешенияКомиссииController(ApplicationDbContext context, IAuditService auditService)
         {
             _context = context;
+            _auditService = auditService;
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult AccessDenied()
+        {
+            return View("AccessDenied"); // Отображение страницы с сообщением об отказе в доступе
         }
 
         // GET: РешенияКомиссии
+        [Authorize(Roles = "voenkomat_worker, MO, Administrator")]
         public async Task<IActionResult> Index()
         {
+            string userName = User.Identity.Name;
+            string role = User.FindFirst(ClaimsIdentity.DefaultRoleClaimType)?.Value;
+            _auditService.LogAction(userName, role, "SELECT", "РешенияКомиссии");
+
             var applicationDbContext = _context.РешенияКомиссии.Include(р => р.Призывник);
             return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: РешенияКомиссии/Details/5
+        [Authorize(Roles = "voenkomat_worker, MO, Administrator")]
         public async Task<IActionResult> Details(int? id)
         {
+            string userName = User.Identity.Name;
+            string role = User.FindFirst(ClaimsIdentity.DefaultRoleClaimType)?.Value;
+            _auditService.LogAction(userName, role, "DETAILS", "РешенияКомиссии");
+
             if (id == null || _context.РешенияКомиссии == null)
             {
                 return NotFound();
@@ -46,8 +64,13 @@ namespace Kursach_Voenkomat
         }
 
         // GET: РешенияКомиссии/Create
+        [Authorize(Roles = "voenkomat_worker, Administrator")]
         public IActionResult Create()
         {
+            string userName = User.Identity.Name;
+            string role = User.FindFirst(ClaimsIdentity.DefaultRoleClaimType)?.Value;
+            _auditService.LogAction(userName, role, "INSERT", "РешенияКомиссии");
+
             ViewData["ID_призывника"] = new SelectList(_context.Призывники, "ID_призывника", "ПризывникФИО");
             return View();
         }
@@ -68,8 +91,13 @@ namespace Kursach_Voenkomat
         }
 
         // GET: РешенияКомиссии/Edit/5
+        [Authorize(Roles = "voenkomat_worker, Administrator")]
         public async Task<IActionResult> Edit(int? id)
         {
+            string userName = User.Identity.Name;
+            string role = User.FindFirst(ClaimsIdentity.DefaultRoleClaimType)?.Value;
+            _auditService.LogAction(userName, role, "UPDATE", "РешенияКомиссии");
+
             if (id == null)
             {
                 return NotFound();
@@ -120,8 +148,13 @@ namespace Kursach_Voenkomat
 
 
         // GET: РешенияКомиссии/Delete/5
+        [Authorize(Roles = "voenkomat_worker, Administrator")]
         public async Task<IActionResult> Delete(int? id)
         {
+            string userName = User.Identity.Name;
+            string role = User.FindFirst(ClaimsIdentity.DefaultRoleClaimType)?.Value;
+            _auditService.LogAction(userName, role, "DELETE", "РешенияКомиссии");
+
             if (id == null || _context.РешенияКомиссии == null)
             {
                 return NotFound();

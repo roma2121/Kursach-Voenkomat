@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Kursach_Voenkomat.Data;
 using Kursach_Voenkomat.Models;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace Kursach_Voenkomat
 {
@@ -14,19 +16,35 @@ namespace Kursach_Voenkomat
     {
         private readonly ApplicationDbContext _context;
 
-        public ПовесткиController(ApplicationDbContext context)
+        private readonly IAuditService _auditService;
+
+        public ПовесткиController(ApplicationDbContext context, IAuditService auditService)
         {
             _context = context;
+            _auditService = auditService;
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult AccessDenied()
+        {
+            return View("AccessDenied"); // Отображение страницы с сообщением об отказе в доступе
         }
 
         // GET: Повестки
+        [Authorize(Roles = "voenkomat_worker, State_services, Administrator")]
         public async Task<IActionResult> Index()
         {
+            string userName = User.Identity.Name;
+            string role = User.FindFirst(ClaimsIdentity.DefaultRoleClaimType)?.Value;
+            _auditService.LogAction(userName, role, "SELECT", "Повестки");
+
             var applicationDbContext = _context.Повестки.Include(п => п.Призывник).Include(п => п.статусЯвки).Include(п => п.типПовестки);
             return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: Повестки/Details/5
+        [Authorize(Roles = "voenkomat_worker, State_services, Administrator")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Повестки == null)
@@ -48,8 +66,13 @@ namespace Kursach_Voenkomat
         }
 
         // GET: Повестки/Create
+        [Authorize(Roles = "voenkomat_worker, Administrator")]
         public IActionResult Create()
         {
+            string userName = User.Identity.Name;
+            string role = User.FindFirst(ClaimsIdentity.DefaultRoleClaimType)?.Value;
+            _auditService.LogAction(userName, role, "INSERT", "Повестки");
+
             ViewData["ID_призывника"] = new SelectList(_context.Призывники, "ID_призывника", "ПризывникФИО");
             ViewData["ID_наименования_статуса_явки"] = new SelectList(_context.ВидыСтатусовЯвки, "ID_наименования_статуса_явки", "Наименование_статуса_явки");
             ViewData["ID_типа_повестки"] = new SelectList(_context.ТипыПовесток, "ID_типа_повестки", "Тип_повестки");
@@ -76,8 +99,13 @@ namespace Kursach_Voenkomat
         }
 
         // GET: Повестки/Edit/5
+        [Authorize(Roles = "voenkomat_worker, Administrator")]
         public async Task<IActionResult> Edit(int? id)
         {
+            string userName = User.Identity.Name;
+            string role = User.FindFirst(ClaimsIdentity.DefaultRoleClaimType)?.Value;
+            _auditService.LogAction(userName, role, "UPDATE", "Повестки");
+
             if (id == null || _context.Повестки == null)
             {
                 return NotFound();
@@ -133,8 +161,13 @@ namespace Kursach_Voenkomat
         }
 
         // GET: Повестки/Delete/5
+        [Authorize(Roles = "voenkomat_worker, Administrator")]
         public async Task<IActionResult> Delete(int? id)
         {
+            string userName = User.Identity.Name;
+            string role = User.FindFirst(ClaimsIdentity.DefaultRoleClaimType)?.Value;
+            _auditService.LogAction(userName, role, "DELETE", "Повестки");
+
             if (id == null || _context.Повестки == null)
             {
                 return NotFound();

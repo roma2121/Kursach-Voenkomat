@@ -4,7 +4,7 @@ using Kursach_Voenkomat.Models;
 
 namespace Kursach_Voenkomat.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)

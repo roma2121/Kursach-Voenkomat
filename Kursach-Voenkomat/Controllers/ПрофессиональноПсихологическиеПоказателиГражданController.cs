@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Kursach_Voenkomat.Data;
 using Kursach_Voenkomat.Models;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace Kursach_Voenkomat
 {
@@ -14,21 +16,41 @@ namespace Kursach_Voenkomat
     {
         private readonly ApplicationDbContext _context;
 
-        public ПрофессиональноПсихологическиеПоказателиГражданController(ApplicationDbContext context)
+        private readonly IAuditService _auditService;
+
+        public ПрофессиональноПсихологическиеПоказателиГражданController(ApplicationDbContext context, IAuditService auditService)
         {
             _context = context;
+            _auditService = auditService;
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult AccessDenied()
+        {
+            return View("AccessDenied"); // Отображение страницы с сообщением об отказе в доступе
         }
 
         // GET: ПрофессиональноПсихологическиеПоказателиГраждан
+        [Authorize(Roles = "voenkomat_worker, MO, Medical_worker, Administrator")]
         public async Task<IActionResult> Index()
         {
+            string userName = User.Identity.Name;
+            string role = User.FindFirst(ClaimsIdentity.DefaultRoleClaimType)?.Value;
+            _auditService.LogAction(userName, role, "SELECT", "ПрофессиональныеПоказателиГраждан");
+
             var applicationDbContext = _context.ПрофессиональноПсихологическиеПоказателиГраждан.Include(п => п.Призывник).Include(п => п.военноПрофессиональнаяНаправленность).Include(п => п.категорияПрофессиональнойПригодности);
             return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: ПрофессиональноПсихологическиеПоказателиГраждан/Details/5
+        [Authorize(Roles = "voenkomat_worker, MO, Medical_worker, Administrator")]
         public async Task<IActionResult> Details(int? id)
         {
+            string userName = User.Identity.Name;
+            string role = User.FindFirst(ClaimsIdentity.DefaultRoleClaimType)?.Value;
+            _auditService.LogAction(userName, role, "DETAILS", "ПрофессиональныеПоказателиГраждан");
+
             if (id == null || _context.ПрофессиональноПсихологическиеПоказателиГраждан == null)
             {
                 return NotFound();
@@ -48,8 +70,13 @@ namespace Kursach_Voenkomat
         }
 
         // GET: ПрофессиональноПсихологическиеПоказателиГраждан/Create
+        [Authorize(Roles = "voenkomat_worker, Administrator")]
         public IActionResult Create()
         {
+            string userName = User.Identity.Name;
+            string role = User.FindFirst(ClaimsIdentity.DefaultRoleClaimType)?.Value;
+            _auditService.LogAction(userName, role, "INSERT", "ПрофессиональныеПоказателиГраждан");
+
             ViewData["ID_призывника"] = new SelectList(_context.Призывники, "ID_призывника", "ПризывникФИО");
             ViewData["ID_военно_профессиональной_направленности"] = new SelectList(_context.ВоенноПрофессиональныеНаправленности, "ID_военно_профессиональной_направленности", "Наименование_военно_профессиональной_направленности");
             ViewData["ID_категории_профессиональной_пригодности"] = new SelectList(_context.КатегорииПрофессиональнойПригодности, "ID_категории_профессиональной_пригодности", "Категории_профессиональной_пригодности");
@@ -76,8 +103,13 @@ namespace Kursach_Voenkomat
         }
 
         // GET: ПрофессиональноПсихологическиеПоказателиГраждан/Edit/5
+        [Authorize(Roles = "voenkomat_worker, Administrator")]
         public async Task<IActionResult> Edit(int? id)
         {
+            string userName = User.Identity.Name;
+            string role = User.FindFirst(ClaimsIdentity.DefaultRoleClaimType)?.Value;
+            _auditService.LogAction(userName, role, "UPDATE", "ПрофессиональныеПоказателиГраждан");
+
             if (id == null || _context.ПрофессиональноПсихологическиеПоказателиГраждан == null)
             {
                 return NotFound();
@@ -133,8 +165,13 @@ namespace Kursach_Voenkomat
         }
 
         // GET: ПрофессиональноПсихологическиеПоказателиГраждан/Delete/5
+        [Authorize(Roles = "voenkomat_worker, Administrator")]
         public async Task<IActionResult> Delete(int? id)
         {
+            string userName = User.Identity.Name;
+            string role = User.FindFirst(ClaimsIdentity.DefaultRoleClaimType)?.Value;
+            _auditService.LogAction(userName, role, "DELETE", "ПрофессиональныеПоказателиГраждан");
+
             if (id == null || _context.ПрофессиональноПсихологическиеПоказателиГраждан == null)
             {
                 return NotFound();

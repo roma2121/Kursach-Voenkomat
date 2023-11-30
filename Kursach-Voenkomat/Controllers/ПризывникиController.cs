@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Kursach_Voenkomat.Data;
 using Kursach_Voenkomat.Models;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace Kursach_Voenkomat
 {
@@ -14,21 +16,41 @@ namespace Kursach_Voenkomat
     {
         private readonly ApplicationDbContext _context;
 
-        public ПризывникиController(ApplicationDbContext context)
+        private readonly IAuditService _auditService;
+
+        public ПризывникиController(ApplicationDbContext context, IAuditService auditService)
         {
             _context = context;
+            _auditService = auditService;
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult AccessDenied()
+        {
+            return View("AccessDenied"); // Отображение страницы с сообщением об отказе в доступе
         }
 
         // GET: Призывники
+        [Authorize(Roles = "voenkomat_worker, MO, Medical_worker, State_services, Administrator")]
         public async Task<IActionResult> Index()
         {
+            string userName = User.Identity.Name;
+            string role = User.FindFirst(ClaimsIdentity.DefaultRoleClaimType)?.Value;
+            _auditService.LogAction(userName, role, "SELECT", "Призывники");
+
             var applicationDbContext = _context.Призывники.Include(п => п.Пол);
             return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: Призывники/Details/5
+        [Authorize(Roles = "voenkomat_worker, MO, Medical_worker, State_services, Administrator")]
         public async Task<IActionResult> Details(int? id)
         {
+            string userName = User.Identity.Name;
+            string role = User.FindFirst(ClaimsIdentity.DefaultRoleClaimType)?.Value;
+            _auditService.LogAction(userName, role, "DETAILS", "Призывники");
+
             if (id == null || _context.Призывники == null)
             {
                 return NotFound();
@@ -46,8 +68,13 @@ namespace Kursach_Voenkomat
         }
 
         // GET: Призывники/Create
+        [Authorize(Roles = "voenkomat_worker, Administrator")]
         public IActionResult Create()
         {
+            string userName = User.Identity.Name;
+            string role = User.FindFirst(ClaimsIdentity.DefaultRoleClaimType)?.Value;
+            _auditService.LogAction(userName, role, "INSERT", "Призывники");
+
             var полыList = _context.Полы.Select(п => new { ID_пола = п.ID_пола, Наименование = п.Пол }).ToList();
 
             ViewData["ID_пола"] = new SelectList(полыList, "ID_пола", "Наименование");
@@ -74,8 +101,13 @@ namespace Kursach_Voenkomat
         }
 
         // GET: Призывники/Edit/5
+        [Authorize(Roles = "voenkomat_worker, Administrator")]
         public async Task<IActionResult> Edit(int? id)
         {
+            string userName = User.Identity.Name;
+            string role = User.FindFirst(ClaimsIdentity.DefaultRoleClaimType)?.Value;
+            _auditService.LogAction(userName, role, "UPDATE", "Призывники");
+
             if (id == null || _context.Призывники == null)
             {
                 return NotFound();
@@ -133,8 +165,13 @@ namespace Kursach_Voenkomat
         }
 
         // GET: Призывники/Delete/5
+        [Authorize(Roles = "voenkomat_worker, Administrator")]
         public async Task<IActionResult> Delete(int? id)
         {
+            string userName = User.Identity.Name;
+            string role = User.FindFirst(ClaimsIdentity.DefaultRoleClaimType)?.Value;
+            _auditService.LogAction(userName, role, "DELETE", "Призывники");
+
             if (id == null || _context.Призывники == null)
             {
                 return NotFound();

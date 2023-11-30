@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Kursach_Voenkomat.Data;
 using Kursach_Voenkomat.Models;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace Kursach_Voenkomat
 {
@@ -14,22 +16,42 @@ namespace Kursach_Voenkomat
     {
         private readonly ApplicationDbContext _context;
 
-        public УровниОбразованияController(ApplicationDbContext context)
+        private readonly IAuditService _auditService;
+
+        public УровниОбразованияController(ApplicationDbContext context, IAuditService auditService)
         {
             _context = context;
+            _auditService = auditService;
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult AccessDenied()
+        {
+            return View("AccessDenied"); // Отображение страницы с сообщением об отказе в доступе
         }
 
         // GET: УровниОбразования
+        [Authorize(Roles = "voenkomat_worker, MO, Administrator")]
         public async Task<IActionResult> Index()
         {
-              return _context.УровниОбразования != null ? 
+            string userName = User.Identity.Name;
+            string role = User.FindFirst(ClaimsIdentity.DefaultRoleClaimType)?.Value;
+            _auditService.LogAction(userName, role, "SELECT", "УровниОбразования");
+
+            return _context.УровниОбразования != null ? 
                           View(await _context.УровниОбразования.ToListAsync()) :
                           Problem("Entity set 'ApplicationDbContext.УровниОбразования'  is null.");
         }
 
         // GET: УровниОбразования/Details/5
+        [Authorize(Roles = "voenkomat_worker, MO, Administrator")]
         public async Task<IActionResult> Details(int? id)
         {
+            string userName = User.Identity.Name;
+            string role = User.FindFirst(ClaimsIdentity.DefaultRoleClaimType)?.Value;
+            _auditService.LogAction(userName, role, "DETAILS", "УровниОбразования");
+
             if (id == null || _context.УровниОбразования == null)
             {
                 return NotFound();
@@ -46,8 +68,13 @@ namespace Kursach_Voenkomat
         }
 
         // GET: УровниОбразования/Create
+        [Authorize(Roles = "Administrator")]
         public IActionResult Create()
         {
+            string userName = User.Identity.Name;
+            string role = User.FindFirst(ClaimsIdentity.DefaultRoleClaimType)?.Value;
+            _auditService.LogAction(userName, role, "INSERT", "УровниОбразования");
+
             return View();
         }
 
@@ -68,8 +95,13 @@ namespace Kursach_Voenkomat
         }
 
         // GET: УровниОбразования/Edit/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Edit(int? id)
         {
+            string userName = User.Identity.Name;
+            string role = User.FindFirst(ClaimsIdentity.DefaultRoleClaimType)?.Value;
+            _auditService.LogAction(userName, role, "UPDATE", "УровниОбразования");
+
             if (id == null || _context.УровниОбразования == null)
             {
                 return NotFound();
@@ -119,8 +151,13 @@ namespace Kursach_Voenkomat
         }
 
         // GET: УровниОбразования/Delete/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Delete(int? id)
         {
+            string userName = User.Identity.Name;
+            string role = User.FindFirst(ClaimsIdentity.DefaultRoleClaimType)?.Value;
+            _auditService.LogAction(userName, role, "DELETE", "УровниОбразования");
+
             if (id == null || _context.УровниОбразования == null)
             {
                 return NotFound();

@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Kursach_Voenkomat.Data;
 using Kursach_Voenkomat.Models;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace Kursach_Voenkomat
 {
@@ -14,22 +16,42 @@ namespace Kursach_Voenkomat
     {
         private readonly ApplicationDbContext _context;
 
-        public КатегорииГодностиController(ApplicationDbContext context)
+        private readonly IAuditService _auditService;
+
+        public КатегорииГодностиController(ApplicationDbContext context, IAuditService auditService)
         {
             _context = context;
+            _auditService = auditService;
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult AccessDenied()
+        {
+            return View("AccessDenied"); // Отображение страницы с сообщением об отказе в доступе
         }
 
         // GET: КатегорииГодности
+        [Authorize(Roles = "voenkomat_worker, MO, Medical_worker, Administrator")]
         public async Task<IActionResult> Index()
         {
-              return _context.КатегорииГодности != null ? 
+            string userName = User.Identity.Name;
+            string role = User.FindFirst(ClaimsIdentity.DefaultRoleClaimType)?.Value;
+            _auditService.LogAction(userName, role, "SELECT", "КатегорииГодности");
+
+            return _context.КатегорииГодности != null ? 
                           View(await _context.КатегорииГодности.ToListAsync()) :
                           Problem("Entity set 'ApplicationDbContext.КатегорииГодности'  is null.");
         }
 
         // GET: КатегорииГодности/Details/5
+        [Authorize(Roles = "voenkomat_worker, MO, Medical_worker, Administrator")]
         public async Task<IActionResult> Details(int? id)
         {
+            string userName = User.Identity.Name;
+            string role = User.FindFirst(ClaimsIdentity.DefaultRoleClaimType)?.Value;
+            _auditService.LogAction(userName, role, "DETAILS", "КатегорииГодности");
+
             if (id == null || _context.КатегорииГодности == null)
             {
                 return NotFound();
@@ -46,8 +68,13 @@ namespace Kursach_Voenkomat
         }
 
         // GET: КатегорииГодности/Create
+        [Authorize(Roles = "MO, Administrator")]
         public IActionResult Create()
         {
+            string userName = User.Identity.Name;
+            string role = User.FindFirst(ClaimsIdentity.DefaultRoleClaimType)?.Value;
+            _auditService.LogAction(userName, role, "ISERT", "КатегорииГодности");
+
             return View();
         }
 
@@ -68,8 +95,13 @@ namespace Kursach_Voenkomat
         }
 
         // GET: КатегорииГодности/Edit/5
+        [Authorize(Roles = "MO, Administrator")]
         public async Task<IActionResult> Edit(int? id)
         {
+            string userName = User.Identity.Name;
+            string role = User.FindFirst(ClaimsIdentity.DefaultRoleClaimType)?.Value;
+            _auditService.LogAction(userName, role, "UPDATE", "КатегорииГодности");
+
             if (id == null || _context.КатегорииГодности == null)
             {
                 return NotFound();
@@ -119,8 +151,13 @@ namespace Kursach_Voenkomat
         }
 
         // GET: КатегорииГодности/Delete/5
+        [Authorize(Roles = "MO, Administrator")]
         public async Task<IActionResult> Delete(int? id)
         {
+            string userName = User.Identity.Name;
+            string role = User.FindFirst(ClaimsIdentity.DefaultRoleClaimType)?.Value;
+            _auditService.LogAction(userName, role, "DELETE", "КатегорииГодности");
+
             if (id == null || _context.КатегорииГодности == null)
             {
                 return NotFound();

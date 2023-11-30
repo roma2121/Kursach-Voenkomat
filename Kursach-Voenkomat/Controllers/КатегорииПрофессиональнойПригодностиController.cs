@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Kursach_Voenkomat.Data;
 using Kursach_Voenkomat.Models;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace Kursach_Voenkomat
 {
@@ -14,22 +11,42 @@ namespace Kursach_Voenkomat
     {
         private readonly ApplicationDbContext _context;
 
-        public КатегорииПрофессиональнойПригодностиController(ApplicationDbContext context)
+        private readonly IAuditService _auditService;
+
+        public КатегорииПрофессиональнойПригодностиController(ApplicationDbContext context, IAuditService auditService)
         {
             _context = context;
+            _auditService = auditService;
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult AccessDenied()
+        {
+            return View("AccessDenied"); // Отображение страницы с сообщением об отказе в доступе
         }
 
         // GET: КатегорииПрофессиональнойПригодности
+        [Authorize(Roles = "voenkomat_worker, MO, Medical_worker, Administrator")]
         public async Task<IActionResult> Index()
         {
-              return _context.КатегорииПрофессиональнойПригодности != null ? 
+            string userName = User.Identity.Name;
+            string role = User.FindFirst(ClaimsIdentity.DefaultRoleClaimType)?.Value;
+            _auditService.LogAction(userName, role, "SELECT", "КатегорииПрофессиональнойПригодности");
+
+            return _context.КатегорииПрофессиональнойПригодности != null ? 
                           View(await _context.КатегорииПрофессиональнойПригодности.ToListAsync()) :
                           Problem("Entity set 'ApplicationDbContext.КатегорииПрофессиональнойПригодности'  is null.");
         }
 
         // GET: КатегорииПрофессиональнойПригодности/Details/5
+        [Authorize(Roles = "voenkomat_worker, MO, Medical_worker, Administrator")]
         public async Task<IActionResult> Details(int? id)
         {
+            string userName = User.Identity.Name;
+            string role = User.FindFirst(ClaimsIdentity.DefaultRoleClaimType)?.Value;
+            _auditService.LogAction(userName, role, "DETAILS", "КатегорииПрофессиональнойПригодности");
+
             if (id == null || _context.КатегорииПрофессиональнойПригодности == null)
             {
                 return NotFound();
@@ -46,8 +63,13 @@ namespace Kursach_Voenkomat
         }
 
         // GET: КатегорииПрофессиональнойПригодности/Create
+        [Authorize(Roles = "MO, Administrator")]
         public IActionResult Create()
         {
+            string userName = User.Identity.Name;
+            string role = User.FindFirst(ClaimsIdentity.DefaultRoleClaimType)?.Value;
+            _auditService.LogAction(userName, role, "ISERT", "КатегорииПрофессиональнойПригодности");
+
             return View();
         }
 
@@ -68,8 +90,13 @@ namespace Kursach_Voenkomat
         }
 
         // GET: КатегорииПрофессиональнойПригодности/Edit/5
+        [Authorize(Roles = "MO, Administrator")]
         public async Task<IActionResult> Edit(int? id)
         {
+            string userName = User.Identity.Name;
+            string role = User.FindFirst(ClaimsIdentity.DefaultRoleClaimType)?.Value;
+            _auditService.LogAction(userName, role, "UPDATE", "КатегорииПрофессиональнойПригодности");
+
             if (id == null || _context.КатегорииПрофессиональнойПригодности == null)
             {
                 return NotFound();
@@ -119,8 +146,13 @@ namespace Kursach_Voenkomat
         }
 
         // GET: КатегорииПрофессиональнойПригодности/Delete/5
+        [Authorize(Roles = "MO, Administrator")]
         public async Task<IActionResult> Delete(int? id)
         {
+            string userName = User.Identity.Name;
+            string role = User.FindFirst(ClaimsIdentity.DefaultRoleClaimType)?.Value;
+            _auditService.LogAction(userName, role, "DELETE", "КатегорииПрофессиональнойПригодности");
+
             if (id == null || _context.КатегорииПрофессиональнойПригодности == null)
             {
                 return NotFound();

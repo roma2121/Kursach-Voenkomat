@@ -1,0 +1,74 @@
+﻿@model List<Kursach_Voenkomat.Models.Audits>
+
+<style>
+    tbody tr.error-row td {
+        background-color: #FFCCCC; /* Цвет для строк с ошибками */
+    }
+
+    tbody tr.success-row td {
+        background-color: #CCFFCC; /* Цвет для строк с успехом */
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        font-family: Arial, sans-serif;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    }
+
+    th, td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #f8f9fa;
+        font-weight: bold;
+        color: #333;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f4f4f4;
+    }
+
+    tr:hover {
+        background-color: #e9ecef;
+    }
+
+    tbody tr:last-child td {
+        border-bottom: none;
+    }
+</style>
+
+
+<table>
+    <thead>
+        <tr>
+            <th>Время события (UTC +0)</th>
+            <th>Серверное имя пользователя</th>
+            <th>Имя пользователя БД</th>
+            <th>Имя БД</th>
+            <th>Таблица БД</th>
+            <th>Сообщение</th>
+            <th>Результ выполнения операции</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var audits in Model)
+        {
+            <tr class="@((audits.succeeded == "Ошибка") ? "error-row" : ((audits.succeeded == "Успех") ? "success-row" : ""))">
+
+                <td>@audits.event_time</td>
+                <td>@audits.server_principal_name</td>
+                <td>@audits.database_principal_name</td>
+                <td>@audits.database_name</td>
+                <td>@audits.object_name</td>
+                <td>@audits.statement</td>
+                <td>@audits.succeeded</td>
+            </tr>
+        }
+    </tbody>
+</table>
