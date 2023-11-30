@@ -14,9 +14,13 @@ namespace Kursach_Voenkomat.Controllers
     public class AccountController : Controller
     {
         private UserContext db;
-        public AccountController(UserContext context)
+
+        private readonly IAuditService _auditService;
+
+        public AccountController(UserContext context, IAuditService auditService)
         {
             db = context;
+            _auditService = auditService;
         }
         [HttpGet]
         public IActionResult Login()
@@ -43,6 +47,8 @@ namespace Kursach_Voenkomat.Controllers
                 if (user != null)
                 {
                     await Authenticate(user); // аутентификация
+
+                    _auditService.LogAction(user.UserName, user.Роль?.Name, "Вход", "");
 
                     return RedirectToAction("Index", "Home");
                 }
@@ -86,7 +92,12 @@ namespace Kursach_Voenkomat.Controllers
 
         public async Task<IActionResult> Logout()
         {
+            string userName = User.Identity.Name;
+            string role = User.FindFirst(ClaimsIdentity.DefaultRoleClaimType)?.Value;
+            _auditService.LogAction(userName, role, "Выход", "");
+
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
             return RedirectToAction("Login", "Account");
         }
     }

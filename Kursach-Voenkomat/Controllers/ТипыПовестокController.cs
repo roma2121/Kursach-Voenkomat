@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Kursach_Voenkomat.Data;
 using Kursach_Voenkomat.Models;
@@ -68,7 +63,7 @@ namespace Kursach_Voenkomat
         }
 
         // GET: ТипыПовесток/Create
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "MO, Administrator")]
         public IActionResult Create()
         {
             string userName = User.Identity.Name;
@@ -95,7 +90,7 @@ namespace Kursach_Voenkomat
         }
 
         // GET: ТипыПовесток/Edit/5
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "MO, Administrator")]
         public async Task<IActionResult> Edit(int? id)
         {
             string userName = User.Identity.Name;
@@ -151,7 +146,7 @@ namespace Kursach_Voenkomat
         }
 
         // GET: ТипыПовесток/Delete/5
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "MO, Administrator")]
         public async Task<IActionResult> Delete(int? id)
         {
             string userName = User.Identity.Name;

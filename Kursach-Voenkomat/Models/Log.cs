@@ -14,7 +14,7 @@ namespace Kursach_Voenkomat.Models
 
         public string Действие { get; set; }
 
-        public string Таблица { get; set; }
+        public string? Таблица { get; set; }
 
         public DateTime Дата { get; set; }
 

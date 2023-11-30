@@ -7,7 +7,5 @@ namespace Kursach_Voenkomat.Models
         [Key]
         public int ID_пола { get; set; }
         public string Пол { get; set; }
-
-        //public virtual List<Призывники> Призывник {  get; set; }
     }
 }

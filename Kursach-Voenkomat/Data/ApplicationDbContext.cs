@@ -10,6 +10,7 @@ namespace Kursach_Voenkomat.Data
             : base(options)
         {
         }
+
         public DbSet<ВидыСтатусовЯвки>? ВидыСтатусовЯвки { get; set; }
         public DbSet<ВоенноПрофессиональныеНаправленности>? ВоенноПрофессиональныеНаправленности { get; set; }
         public DbSet<Врачи>? Врачи { get; set; }
