@@ -1,51 +1,43 @@
 ﻿@model Kursach_Voenkomat.Models.LoginViewModel
 
-<h2>Вход на сайт</h2>
+<h2 class="text-center">Вход на сайт</h2>
 
-<form asp-action="Login" asp-controller="Account" asp-anti-forgery="true" class="mt-4">
+<form asp-action="Login" asp-controller="Account" asp-anti-forgery="true" class="mt-4 login-form">
     <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card" style="background-color: #2E8B57; padding: 20px;">
-                <div class="card-body text-center">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Middle_emblem_of_the_Ministry_of_Defence_of_the_Russian_Federation_%2821.07.2003-present%29.svg/1920px-Middle_emblem_of_the_Ministry_of_Defence_of_the_Russian_Federation_%2821.07.2003-present%29.svg.png" class="img-fluid mb-4" style="max-width: 200px;" />
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <div class="form-group">
-                        <label asp-for="UserName" class="form-label" style="font-size: 18px;">Введите логин</label>
-                        <input type="text" asp-for="UserName" class="form-control" />
-                        <span asp-validation-for="UserName" class="text-danger"></span>
-                    </div>
+        <div class="card-body p-5 text-center form-container">
+            <img src="~/images/LogoMO.png" class="img-fluid mb-4" />
 
-                    <div class="form-group">
-                        <label asp-for="Password" class="form-label" style="font-size: 18px;">Введите пароль</label>
-                        <div class="input-group">
-                            <input asp-for="Password" type="password" class="form-control" id="passwordInput" />
-                            <div class="input-group-append">
-                                <span class="input-group-text" style="padding: 0; cursor: pointer;"
-                                      onclick="togglePasswordVisibility()">
-                                    <img src="https://img.freepik.com/premium-vector/show-password-icon-eye-symbol-vector-vision-hide-from-watch-icon-secret-view-web-design-element_87543-11126.jpg" style="width: auto; max-width: 50px;">
-                                </span>
-                            </div>
-                        </div>
-                        <span asp-validation-for="Password" class="text-danger"></span>
-                    </div>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                    <div style="height: 20px;"></div> <!-- Пустой элемент для создания пространства перед кнопкой -->
-                    <div class="form-group mb-4">
-                        <!-- Перенесенный класс mb-4 -->
-                        <button type="submit" class="btn btn-primary" style="margin-top: 10px;">Войти</button>
-                    </div>
+            <div class="input-container">
+                <input type="text" asp-for="UserName" class="form-control rounded-pill" placeholder="Введите логин" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+
+            <div class="input-group">
+                <input asp-for="Password" type="password" class="form-control rounded-pill" id="passwordInput" placeholder="Введите пароль" />
+                <div class="input-group-append">
+                    <button type="button" class="btn btn-light rounded-pill" id="togglePassword" style="margin-left: 5px;" tabindex="2">
+                        <img id="eyeImage" src="~/images/eye.png" alt="Показать пароль" style="width: 30px; height: 30px;" />
+                    </button>
                 </div>
             </div>
+
+            <script>
+                var passwordInput = document.getElementById('passwordInput');
+                var eyeImage = document.getElementById('eyeImage');
+
+                document.getElementById('togglePassword').addEventListener('click', function () {
+                    passwordInput.type = (passwordInput.type === 'password') ? 'text' : 'password';
+                    eyeImage.src = (passwordInput.type === 'password') ? '/images/eye.png' : '/images/eyeOut.png';
+                });
+            </script>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="form-group d-flex justify-content-center">
+            <button type="submit" class="btn btn-primary rounded-pill" style="width: 200px; height: 40px;">Войти</button>
         </div>
     </div>
 </form>
-<script>
-    function togglePasswordVisibility() {
-        var passwordInput = document.getElementById('passwordInput');
-        if (passwordInput.type === 'password') {
-            passwordInput.type = 'text';
-        } else {
-            passwordInput.type = 'password';
-        }
-    }
-</script>

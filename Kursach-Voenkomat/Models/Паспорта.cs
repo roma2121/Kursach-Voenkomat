@@ -9,12 +9,14 @@ namespace Kursach_Voenkomat.Models
         public int ID_паспорта { get; set; }
 
         [Required(ErrorMessage = "Поле 'Серия' обязательно для заполнения")]
-        [MaxLength(4, ErrorMessage = "Поле 'Серия' должно содержать не более 4 символов")]
-        public int Серия { get; set; }
+        [StringLength(4, ErrorMessage = "Серия должна содержать максимум 4 цифры")]
+        [RegularExpression("^[0-9]*$", ErrorMessage = "Серия должна содержать только цифры")]
+        public string Серия { get; set; }
 
         [Required(ErrorMessage = "Поле 'Номер' обязательно для заполнения")]
-        [MaxLength(6, ErrorMessage = "Поле 'Номер' должно содержать не более 6 символов")]
-        public int Номер { get; set; }
+        [StringLength(6, ErrorMessage = "Номер должен содержать максимум 6 цифры")]
+        [RegularExpression("^[0-9]*$", ErrorMessage = "Номер должен содержать только цифры")]
+        public string Номер { get; set; }
 
         [Required(ErrorMessage = "Поле 'Дата выдачи' обязательно для заполнения")]
         [Display(Name = "Дата выдачи")]
@@ -44,6 +46,6 @@ namespace Kursach_Voenkomat.Models
 
         // Свойство для вывода ФИО призывника
         [NotMapped]
-        public string ПризывникФИО => $"{Призывник?.Фамилия} {Призывник?.Имя} {Призывник?.Отчество}";
+        public string? ПризывникФИО => $"{Призывник?.Фамилия} {Призывник?.Имя} {Призывник?.Отчество}";
     }
 }

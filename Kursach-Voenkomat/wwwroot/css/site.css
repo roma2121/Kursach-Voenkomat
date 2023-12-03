@@ -1,44 +1,163 @@
 html {
-  font-size: 14px;
+	font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+	html {
+		font-size: 16px;
+	}
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+	position: relative;
+	min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+}
+
+footer {
+	margin-top: auto;
+	height: 50px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.container {
+	max-width: 100%;
 }
 
 .table-list {
-    list-style: none;
-    padding: 0;
+	list-style: none;
+	padding: 0;
 }
 
-    .table-list li {
-        margin-bottom: 10px;
-    }
+.table-list li {
+	margin-bottom: 10px;
+}
 
 .marker {
-    color: black; /* Измените цвет маркера на черный */
-    font-size: 1.2em; /* Размер маркера */
-    margin-right: 5px; /* Отступ справа от маркера */
+	color: black;
+	font-size: 1.2em;
+	margin-right: 5px;
 }
 
 .table-link {
-    text-decoration: none;
-    color: #007bff; /* Цвет ссылки */
-    font-weight: bold; /* Жирный текст */
-    transition: color 0.3s; /* Плавный переход цвета при наведении */
+	text-decoration: none;
+	color: #007bff;
+	font-weight: bold;
+	transition: color 0.3s;
 }
 
 .table-link:hover {
-    color: #0056b3; /* Цвет ссылки при наведении */
+	color: #0056b3;
+}
+
+.navbar-brand {
+	color: #0033A0;
+	font-weight: bold;
+}
+
+.navbar-brand:hover {
+	color: #D52B1E;
+}
+
+.center-site {
+	width: 300px;
+	height: 300px;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.login-role-button {
+	position: absolute;
+	right: 115px;
+	top: 77%;
+	transform: translate(0%, -100%);
+	background-color: transparent;
+	border: 1px solid #28a745;
+	color: #28a745;
+	padding: 6px 12px;
+	border-radius: 4px;
+	transition: background-color 0.3s, color 0.3s;
+	white-space: nowrap;
+}
+
+.login-role-button:hover {
+	background-color: #28a745;
+	color: #fff;
+}
+
+.login-form {
+	max-width: 400px;
+	margin: 0 auto;
+	background-color: #fff;
+	border: 1px solid #ddd;
+	border-radius: 20px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	padding: 20px;
+	min-width: 250px;
+}
+
+.login-form input {
+	width: 100%;
+	padding: 10px;
+	margin-bottom: 20px;
+	border: 1px solid #ddd;
+	border-radius: 5px;
+	box-sizing: border-box;
+}
+
+.form-group {
+	display: flex;
+	align-items: center;
+}
+
+.login-form img {
+	max-width: 200px;
+	border-radius: 50%;
+}
+
+.login-form button {
+	width: 100%;
+	cursor: pointer;
+}
+
+.login-form button.btn-light {
+	border: none;
+	border-radius: 5px;
+	background-color: #fff;
+	color: #fff;
+}
+
+.login-form button.btn-primary {
+	border: none;
+	border-radius: 5px;
+	background-color: #007bff;
+	color: #fff;
+}
+
+.login-form .eye-icon {
+	cursor: pointer;
+	margin-right: 0px;
+}
+
+.login-form .eye-icon button {
+	width: 40px;
+	height: 40px;
+	border: none;
+	border-radius: 50%;
+	background-color: #fff;
+	color: #007bff;
+}
+
+.login-form .eye-icon button:hover {
+	background-color: #007bff;
+	color: #fff;
 }

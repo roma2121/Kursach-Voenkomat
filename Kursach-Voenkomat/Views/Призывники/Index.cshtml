@@ -9,6 +9,17 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+<form asp-action="Index">
+    <div class="input-group md-form form-sm form-2 pl-0">
+        <input name="searchQuery" class="form-control my-0 py-1 red-border" type="text" placeholder="Поиск" aria-label="Search">
+        <div class="input-group-append">
+
+            <button type="submit" class="btn btn-default">
+                <img src="~/images/searchPng.png" style="width: auto; max-width: 25px;">
+            </button>
+        </div>
+    </div>
+</form>
 <table class="table">
     <thead>
         <tr>
@@ -34,32 +45,42 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Имя)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Фамилия)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Отчество)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Дата_рождения)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Номер_телефона)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Пол.Пол)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ID_призывника">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ID_призывника">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ID_призывника">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Имя)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Фамилия)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Отчество)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Дата_рождения)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Номер_телефона)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Пол.Пол)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ID_призывника">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.ID_призывника">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.ID_призывника">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+@section Scripts {
+    <script>
+        $("#basic-text1").click(function () {
+            $("Form").submit();
+        })
+
+    </script>
+}

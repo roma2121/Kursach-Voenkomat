@@ -33,14 +33,25 @@ namespace Kursach_Voenkomat
 
         // GET: Призывники
         [Authorize(Roles = "voenkomat_worker, MO, Medical_worker, State_services, Administrator")]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchQuery)
         {
             string userName = User.Identity.Name;
             string role = User.FindFirst(ClaimsIdentity.DefaultRoleClaimType)?.Value;
             _auditService.LogAction(userName, role, "SELECT", "Призывники");
 
-            var applicationDbContext = _context.Призывники.Include(п => п.Пол);
-            return View(await applicationDbContext.ToListAsync());
+            IQueryable<Призывники> query = _context.Призывники.Include(з => з.Пол);
+            if (String.IsNullOrEmpty(searchQuery))
+            {
+                var data = await query.ToListAsync();
+                return View(data);
+            }
+            else
+            {
+                var searchItems = await query.Where(s => s.Фамилия.Contains(searchQuery) || s.Имя.Contains(searchQuery) || s.Отчество.Contains(searchQuery)).ToListAsync();
+                return View(searchItems);
+            }
+            //var applicationDbContext = _context.Призывники.Include(п => п.Пол);
+            //return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: Призывники/Details/5
