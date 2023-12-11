@@ -1,0 +1,83 @@
+﻿@model Kursach_Voenkomat.Models.RecordModel
+
+<style>
+    .center-site {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .confirmation-container {
+        background-color: #f8f9fa;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px 0px #888888;
+        width: 400px; /* Adjust the width as needed */
+    }
+
+    .confirmation-message {
+        margin-bottom: 20px;
+    }
+
+    strong {
+        font-weight: bold;
+    }
+
+    ul.document-list {
+        list-style-type: none;
+        padding: 0;
+    }
+
+        ul.document-list li {
+            margin-bottom: 5px;
+        }
+
+    input[type="submit"] {
+        background-color: #007bff;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        display: block;
+        margin: 0 auto; /* Center the button */
+    }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+</style>
+
+<div class="center-site">
+    <div class="confirmation-container">
+        <div class="confirmation-message">
+            <p>Вы были успешно записаны на следующую дату и время:</p>
+            <p><strong>Дата и время посещения:</strong> @Model.Дата_посещения.ToString("dd.MM.yyyy HH:mm")</p>
+            <p>Не забудьте взять с собой следующие документы:</p>
+            <ul class="document-list">
+                <li>Паспорт гражданина РФ</li>
+                <li>Справка об уплате госпошлины</li>
+                <li>Медицинская справка</li>
+                <li>Свидетельство об окончании автошколы (при первичном получении)</li>
+                <li>Водительское удостоверение (при наличии)</li>
+            </ul>
+        </div>
+        <form id="confirmationForm">
+            <input type="submit" value="OK">
+        </form>
+    </div>
+</div>
+<script>
+    // Получаем форму по ее ID
+    var confirmationForm = document.getElementById("confirmationForm");
+
+    // Добавляем обработчик события отправки формы
+    confirmationForm.addEventListener("submit", function (event) {
+        // Предотвращаем стандартное поведение отправки формы
+        event.preventDefault();
+
+        // Выполняем перенаправление на страницу Home/Index
+        window.location.href = '/Home/Index'; // Укажите путь к вашему Home/Index
+    });
+</script>

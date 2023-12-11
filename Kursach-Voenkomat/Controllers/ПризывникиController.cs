@@ -33,25 +33,14 @@ namespace Kursach_Voenkomat
 
         // GET: Призывники
         [Authorize(Roles = "voenkomat_worker, MO, Medical_worker, State_services, Administrator")]
-        public async Task<IActionResult> Index(string searchQuery)
+        public async Task<IActionResult> Index()
         {
             string userName = User.Identity.Name;
             string role = User.FindFirst(ClaimsIdentity.DefaultRoleClaimType)?.Value;
             _auditService.LogAction(userName, role, "SELECT", "Призывники");
 
-            IQueryable<Призывники> query = _context.Призывники.Include(з => з.Пол);
-            if (String.IsNullOrEmpty(searchQuery))
-            {
-                var data = await query.ToListAsync();
-                return View(data);
-            }
-            else
-            {
-                var searchItems = await query.Where(s => s.Фамилия.Contains(searchQuery) || s.Имя.Contains(searchQuery) || s.Отчество.Contains(searchQuery)).ToListAsync();
-                return View(searchItems);
-            }
-            //var applicationDbContext = _context.Призывники.Include(п => п.Пол);
-            //return View(await applicationDbContext.ToListAsync());
+            var applicationDbContext = _context.Призывники.Include(п => п.Пол);
+            return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: Призывники/Details/5
@@ -80,17 +69,36 @@ namespace Kursach_Voenkomat
 
         // GET: Призывники/Create
         [Authorize(Roles = "voenkomat_worker, Administrator")]
-        public IActionResult Create()
+        public IActionResult Create(int id)
         {
             string userName = User.Identity.Name;
             string role = User.FindFirst(ClaimsIdentity.DefaultRoleClaimType)?.Value;
             _auditService.LogAction(userName, role, "INSERT", "Призывники");
 
-            var полыList = _context.Полы.Select(п => new { ID_пола = п.ID_пола, Наименование = п.Пол }).ToList();
+            ViewData["ID_пола"] = new SelectList(_context.Полы, "ID_пола", "Пол");
 
-            ViewData["ID_пола"] = new SelectList(полыList, "ID_пола", "Наименование");
+            RecordModel record = _context.RecordModel.FirstOrDefault(p => p.ID_посещения == id);
 
-            return View();
+            if (record != null)
+            {
+                // Создаем новый объект заявителя и заполняем его данными о посещении
+                Призывники призывник = new Призывники
+                {
+                    Фамилия = record.Фамилия,
+                    Имя = record.Имя,
+                    Отчество = record.Отчество,
+                    Дата_рождения = record.Дата_рождения
+                    // Заполните другие поля заявителя, если они есть и могут быть извлечены из посещения
+                };
+
+                // Отправляем данные заявителя в представление Create заявителя
+                return View(призывник);
+            }
+            else
+            {
+                // Если данные о посещении не найдены, выполните необходимые действия или верните сообщение об ошибке
+                return View();
+            }
         }
 
         // POST: Призывники/Create
@@ -176,7 +184,7 @@ namespace Kursach_Voenkomat
         }
 
         // GET: Призывники/Delete/5
-        [Authorize(Roles = "voenkomat_worker, Administrator")]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Delete(int? id)
         {
             string userName = User.Identity.Name;

@@ -19,25 +19,26 @@ body {
 	min-height: 100vh;
 }
 
+.table-list {
+	list-style: none;
+	padding: 0;
+}
+
+	.table-list li {
+		margin-bottom: 10px;
+	}
+
 footer {
 	margin-top: auto;
 	height: 50px;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
+	background-color: #f8f9fa;
 }
 
-.container {
+.container1 {
 	max-width: 100%;
-}
-
-.table-list {
-	list-style: none;
-	padding: 0;
-}
-
-.table-list li {
-	margin-bottom: 10px;
 }
 
 .marker {
@@ -75,6 +76,13 @@ footer {
 	transform: translate(-50%, -50%);
 }
 
+.center {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+}
+
 .login-role-button {
 	position: absolute;
 	right: 115px;
@@ -94,6 +102,24 @@ footer {
 	color: #fff;
 }
 
+.audit-button {
+	position: absolute;
+	right: 280px;
+	top: 77%;
+	transform: translate(0%, -100%);
+	background-color: #fff;
+	color: black;
+	border: 1px solid #000;
+	padding: 6px 12px;
+	border-radius: 4px;
+	transition: background-color 0.3s, color 0.3s;
+}
+
+	.audit-button:hover {
+		background-color: black;
+		color: #fff;
+	}
+
 .login-form {
 	max-width: 400px;
 	margin: 0 auto;
@@ -112,11 +138,6 @@ footer {
 	border: 1px solid #ddd;
 	border-radius: 5px;
 	box-sizing: border-box;
-}
-
-.form-group {
-	display: flex;
-	align-items: center;
 }
 
 .login-form img {
@@ -160,4 +181,102 @@ footer {
 .login-form .eye-icon button:hover {
 	background-color: #007bff;
 	color: #fff;
+}
+
+.center-logo {
+	position: relative;
+	left: 50%;
+	transform: translate(-50%, 25%);
+	height: 60px;
+}
+
+.sidebar {
+	height: 100%;
+	width: 0;
+	position: fixed;
+	z-index: 1;
+	top: 0;
+	left: 0;
+	background-color: #fff;
+	overflow-x: hidden;
+	transition: 0.5s;
+	padding-top: 60px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.sidebar li {
+	padding: 8px;
+}
+
+.sidebar.active {
+	width: 350px;
+}
+
+#sidebar ul li {
+	border-bottom: 1px solid #ddd; /* Цвет и стиль линии между элементами */
+}
+
+#sidebar ul li:last-child {
+	border-bottom: none; /* Убираем линию с последнего элемента */
+}
+
+#sidebar ul li a {
+	display: block;
+	padding: 5px;
+	text-decoration: none;
+	color: #333; /* Цвет текста */
+}
+
+#sidebar ul li a:hover {
+	background-color: #f5f5f5; /* Цвет фона при наведении */
+}
+
+#menuToggleBtn {
+	position: absolute;
+	top: 25%;
+	left: 20px;
+	z-index: 2;
+}
+
+.marker {
+	margin-right: 5px;
+}
+
+.dataTables_wrapper .dataTables_filter input {
+	position: relative;
+	left: -6%;
+	top: 1%;
+	transform: translate(10%, -25%);
+	margin: 5px;
+	padding: 8px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	box-sizing: border-box;
+}
+
+.dataTables_wrapper .dataTables_filter label input[type="search"]:focus {
+	outline-color: #ddd;
+	border-color: #ddd;
+}
+
+.dataTables_wrapper .dataTables_filter input {
+	border-radius: 20px !important;
+	box-sizing: border-box;
+}
+.dataTables_wrapper .dataTables_filter label {
+	display: flex;
+	align-items: flex-start;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+	border-radius: 15px;
+	color: #fff;
+	border-radius: 15px !important;
+	border: 1px solid #000;
 }

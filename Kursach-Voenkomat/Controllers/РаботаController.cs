@@ -151,7 +151,7 @@ namespace Kursach_Voenkomat
         }
 
         // GET: Работа/Delete/5
-        [Authorize(Roles = "voenkomat_worker, Administrator")]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Delete(int? id)
         {
             string userName = User.Identity.Name;

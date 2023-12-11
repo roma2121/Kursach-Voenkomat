@@ -7,59 +7,154 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Kursach_Voenkomat.styles.css" asp-append-version="true" />
+
+    <link href="https://cdn.datatables.net/v/dt/dt-1.13.8/af-2.6.0/datatables.min.css" rel="stylesheet">
+
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index" style="font-size: 125%; text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000; color: #fff; letter-spacing: 1px;">
-                    Единый<span style="color: #0056b3;">Учет</span><span style="color: #FF0000;">Военнообязанных</span>
-                </a>
+                <div class="center-logo">
+                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index" style="font-size: 125%; text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000; color: #fff; letter-spacing: 1px;">
+                        Единый<span style="color: #0056b3;">Учет</span><span style="color: #FF0000;">Военнообязанных</span>
+                    </a>
+                </div>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
+
+
+
+
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     @if (User.Identity.IsAuthenticated)
                     {
                         var nameMappings = new Dictionary<string, string>
-                        {
-                            { "Vasily_Vasilie", "Василий Васильев" },
-                            { "Nikita_Nazarov", "Никита Назаров" },
-                            { "Kirill_Popov", "Крилл Попов" },
-                            { "Valeria_Leonova", "Валерия Леонова" },
-                            { "Adminchik", "Администратор" }
-                        };
-                        
+                    {
+                    { "Vasily_Vasilie", "Василий Васильев" },
+                    { "Nikita_Nazarov", "Никита Назаров" },
+                    { "Kirill_Popov", "Крилл Попов" },
+                    { "Valeria_Leonova", "Валерия Леонова" },
+                    { "Adminchik", "Администратор" }
+                    };
+
                         var roleMappings = new Dictionary<string, string>
-                        {
-                            { "voenkomat_worker", "Сотрудник военкомата" },
-                            { "MO", "Министерство обороны" },
-                            { "Medical_worker", "Медицинский работник" },
-                            { "State_services", "Госуслуги" },
-                            { "Administrator", "Администратор" },
-                        };
+                    {
+                    { "voenkomat_worker", "Сотрудник военкомата" },
+                    { "MO", "Министерство обороны" },
+                    { "Medical_worker", "Медицинский работник" },
+                    { "State_services", "Госуслуги" },
+                    { "Administrator", "Администратор" },
+                    };
 
                         string displayName = nameMappings.GetValueOrDefault(User.Identity.Name, User.Identity.Name);
                         string role = User.Claims.FirstOrDefault(c => c.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role")?.Value ?? "Роль не указана";
                         string displayRole = roleMappings.GetValueOrDefault(role, role);
 
-                        <ul class="navbar-nav flex-grow-1">
+                        <button class="btn btn-primary" id="menuToggleBtn">&#9776; Меню</button>
+
+                        <!-- Выезжающее меню -->
+
+                        <div id="sidebar" class="sidebar">
+                            <ul>
+                                <li>
+                                    <a href="https://localhost:7145/ВидыСтатусовЯвки" target="_blank">Виды статусов явки</a>
+                                </li>
+                                <li>
+                                    <a href="https://localhost:7145/ВоенноПрофессиональныеНаправленности" target="_blank">Военно-профессиональные направленности</a>
+                                </li>
+                                <li>
+                                    <a href="https://localhost:7145/Врачи" target="_blank">Врачи</a>
+                                </li>
+                                <li>
+                                    <a href="https://localhost:7145/ЗаключенияВрачей" target="_blank">Заключения врачей</a>
+                                </li>
+                                <li>
+                                    <a href="https://localhost:7145/КатегорииГодности" target="_blank">Категории годности</a>
+                                </li>
+                                <li>
+                                    <a href="https://localhost:7145/КатегорииПрофессиональнойПригодности" target="_blank">Категории профессиональной пригодности</a>
+                                </li>
+                                <li>
+                                    <a href="https://localhost:7145/МедицинскиеДокументы" target="_blank">Медицинские документы</a>
+                                </li>
+                                <li>
+                                    <a href="https://localhost:7145/Образование" target="_blank">Образование</a>
+                                </li>
+                                <li>
+                                    <a href="https://localhost:7145/ОбразовательныеОрганизации" target="_blank">Образовательные организации</a>
+                                </li>
+                                <li>
+                                    <a href="https://localhost:7145/Паспорта" target="_blank">Паспорта</a>
+                                </li>
+                                <li>
+                                    <a href="https://localhost:7145/Повестки" target="_blank">Повестки</a>
+                                </li>
+                                <li>
+                                    <a href="https://localhost:7145/Полы" target="_blank">Полы</a>
+                                </li>
+                                <li>
+                                    <a href="https://localhost:7145/Призывники" target="_blank">Призывники</a>
+                                </li>
+                                <li>
+                                    <a href="https://localhost:7145/ПризывникРабота" target="_blank">Призывник-работа</a>
+                                </li>
+                                <li>
+                                    <a href="https://localhost:7145/Приписные" target="_blank">Приписные</a>
+                                </li>
+                                <li>
+                                    <a href="https://localhost:7145/ПрофессиональноПсихологическиеПоказателиГраждан" target="_blank">ПП показатели</a>
+                                </li>
+                                <li>
+                                    <a href="https://localhost:7145/Работа" target="_blank">Работа</a>
+                                </li>
+                                <li>
+                                    <a href="https://localhost:7145/РешенияКомиссии" target="_blank">Решения комиссии</a>
+                                </li>
+                                <li>
+                                    <a href="https://localhost:7145/СпециальностиВрачей" target="_blank">Специальности врачей</a>
+                                </li>
+                                <li>
+                                    <a href="https://localhost:7145/ТипыОбразовательныхОрганизаций" target="_blank">Типы образовательных организаций</a>
+                                </li>
+                                <li>
+                                    <a href="https://localhost:7145/ТипыПовесток" target="_blank">Типы повесток</a>
+                                </li>
+                                <li>
+                                    <a href="https://localhost:7145/УровниОбразования" target="_blank">Уровни образования</a>
+                                </li>
+                                <li>
+                                    <a href="https://localhost:7145/Record" target="_blank">Записи</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <ul class="navbar-nav">
                             @if (role == "Administrator")
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Logs" asp-action="Index">Аудит</a>
+                                    <form asp-controller="Logs" asp-action="Index" class="nav-link">
+                                        <button type="submit" class="audit-button">Аудит</button>
+                                    </form>
                                 </li>
-                        }
+                            }
                         </ul>
 
-                        <p title="Роль: @displayRole">
-                            <button class="login-role-button" id="loginRoleButton" data-role="@displayRole">@displayName</button>
-                        </p>
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <p title="Роль: @displayRole">
+                                    <button class="login-role-button" id="loginRoleButton" data-role="@displayRole">@displayName</button>
+                                </p>
+                            </li>
 
-                        <form asp-controller="Account" asp-action="Logout" method="post" class="nav-link">
-                            <button type="submit" class="btn btn-outline-danger">Выйти</button>
-                        </form>
+                            <li class="nav-item">
+                                <form asp-controller="Account" asp-action="Logout" method="post" class="nav-link">
+                                    <button type="submit" class="btn btn-outline-danger">Выйти</button>
+                                </form>
+                            </li>
+                        </ul>
 
                         <script>
                             var button = document.getElementById('loginRoleButton');
@@ -72,6 +167,11 @@
 
                             button.addEventListener('mouseout', function () {
                                 button.innerText = originalText;
+                            });
+                        </script>
+                        <script>
+                            document.getElementById('menuToggleBtn').addEventListener('click', function () {
+                                document.getElementById('sidebar').classList.toggle('active');
                             });
                         </script>
                     }
@@ -93,6 +193,7 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://cdn.datatables.net/v/dt/dt-1.13.8/af-2.6.0/datatables.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

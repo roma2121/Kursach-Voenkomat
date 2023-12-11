@@ -58,15 +58,16 @@ namespace Kursach_Voenkomat.Controllers
                 new TableInfo { TableName = "Полы", DisplayName = "Полы" },
                 new TableInfo { TableName = "Призывники", DisplayName = "Призывники" },
                 new TableInfo { TableName = "ПризывникРабота", DisplayName = "Призывник-работа" },
-                new TableInfo { TableName = "ПрофессиональноПсихологическиеПоказателиГраждан", DisplayName = "Профессионально-психологические показатели граждан" },
+                new TableInfo { TableName = "Приписные", DisplayName = "Приписные" },
+                new TableInfo { TableName = "ПрофессиональноПсихологическиеПоказателиГраждан", DisplayName = "ПП показатели" },
                 new TableInfo { TableName = "Работа", DisplayName = "Работа" },
                 new TableInfo { TableName = "РешенияКомиссии", DisplayName = "Решения комиссии" },
                 new TableInfo { TableName = "СпециальностиВрачей", DisplayName = "Специальности врачей" },
                 new TableInfo { TableName = "ТипыОбразовательныхОрганизаций", DisplayName = "Типы образовательных организаций" },
                 new TableInfo { TableName = "ТипыПовесток", DisplayName = "Типы повесток" },
-                new TableInfo { TableName = "УровниОбразования", DisplayName = "Уровни образования" }
+                new TableInfo { TableName = "УровниОбразования", DisplayName = "Уровни образования" },
+                new TableInfo { TableName = "Record", DisplayName = "Записи" }
             };
-
         }
 
         public IActionResult RedirectToTable(string tableName)

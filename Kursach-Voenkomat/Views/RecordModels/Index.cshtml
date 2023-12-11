@@ -1,0 +1,131 @@
+﻿@model Kursach_Voenkomat.Models.RecordModel
+
+<style>
+    .center-site {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .form-container {
+        background-color: #f8f9fa;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px 0px #888888;
+        width: 400px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    label {
+        font-weight: bold;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    input[type="datetime-local"] {
+        width: 100%;
+        padding: 10px;
+        box-sizing: border-box;
+        border: 1px solid #ced4da;
+        border-radius: 5px;
+    }
+
+    input[type="submit"] {
+        background-color: #007bff;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        display: block;
+        margin: 0 auto; /* Center the button */
+    }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+    .text-danger {
+        color: red;
+    }
+</style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://npmcdn.com/flatpickr/dist/l10n/ru.js"></script>
+
+<div class="center-site">
+    <div class="form-container">
+        <div class="text-center" style="color: #007bff;">
+            <h2>Запись на прием</h2>
+        </div>
+
+        <div style="margin-top: 10px;"></div>
+
+
+        <form asp-controller="RecordModels" asp-action="Index" method="post">
+            <div class="form-group">
+                <label asp-for="Фамилия"></label>
+                <input asp-for="Фамилия" class="form-control" />
+                <span asp-validation-for="Фамилия" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Имя"></label>
+                <input asp-for="Имя" class="form-control" />
+                <span asp-validation-for="Имя" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Отчество"></label>
+                <input asp-for="Отчество" class="form-control" />
+                <span asp-validation-for="Отчество" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Дата_рождения"></label>
+                <input asp-for="Дата_рождения" class="form-control" type="date" required>
+                <span asp-validation-for="Дата_рождения" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Дата_посещения"></label>
+                <input id="datetimePicker" class="form-control" type="text" readonly required>
+                <span asp-validation-for="Дата_посещения" class="text-danger"></span>
+            </div>
+            <script>
+                flatpickr("#datetimePicker", {
+                    enableTime: true,
+                    dateFormat: "Y-m-d H:i",
+                    minDate: "today",
+                    time_24hr: true,
+                    inline: true,
+                    locale: "ru",
+                    minTime: "09:00",
+                    maxTime: "15:00",
+                    minuteIncrement: 15,
+                    disable: [
+                        function (date) {
+                            const dayOfWeek = date.getDay();
+                            return (dayOfWeek === 0 || dayOfWeek === 6);
+                        }
+                    ],
+                    onChange: function (selectedDates, dateStr, instance) {
+                        // Здесь вы можете обработать выбранную дату и время
+                        // Например, обновить связанное поле скрытым input, используя JavaScript
+                        // Например: document.getElementById("СкрытоеПоле").value = dateStr;
+
+                        // Сворачиваем поле выбора даты
+                        instance.close();
+                    }
+                });
+            </script>
+
+
+            <div class="text-center">
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary" style="background-color: #007bff; border-color: #007bff; border-radius: 20px;">Отправить заявление</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

@@ -32,5 +32,7 @@ namespace Kursach_Voenkomat.Data
         public DbSet<ТипыОбразовательныхОрганизаций>? ТипыОбразовательныхОрганизаций { get; set; }
         public DbSet<ТипыПовесток>? ТипыПовесток { get; set; }
         public DbSet<УровниОбразования>? УровниОбразования { get; set; }
+        public DbSet<Приписные>? Приписные { get; set; }
+        public DbSet<Kursach_Voenkomat.Models.RecordModel>? RecordModel { get; set; }
     }
 }
