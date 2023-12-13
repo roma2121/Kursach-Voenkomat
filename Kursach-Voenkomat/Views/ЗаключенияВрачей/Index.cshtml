@@ -1,13 +1,13 @@
 ﻿@model IEnumerable<Kursach_Voenkomat.Models.ЗаключенияВрачей>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Заключения врачей";
 }
 
-<h1>Index</h1>
+<h1>Заключения врачей</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <button type="button" class="create-button" onclick="location.href='@Url.Action("Create")'">Создать</button>
 </p>
 <table class="table" id="myTable">
     <thead>
@@ -56,9 +56,11 @@
                     @Html.DisplayFor(modelItem => item.Дата_выписки_заключения)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.ID_заключения">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.ID_заключения">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.ID_заключения">Delete</a>
+                    <div class="d-flex justify-content-end">
+                        <a asp-action="Edit" asp-route-id="@item.ID_заключения" class="btn btn-success">Изменить</a> |
+                        <a asp-action="Details" asp-route-id="@item.ID_заключения" class="btn btn-warning">Подробности</a> |
+                        <a asp-action="Delete" asp-route-id="@item.ID_заключения" class="btn btn-danger">Удалить</a>
+                    </div>
                 </td>
             </tr>
         }

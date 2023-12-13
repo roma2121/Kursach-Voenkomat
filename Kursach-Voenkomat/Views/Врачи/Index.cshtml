@@ -1,13 +1,13 @@
 ﻿@model IEnumerable<Kursach_Voenkomat.Models.Врачи>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Врачи";
 }
 
-<h1>Index</h1>
+<h1>Врачи</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <button type="button" class="create-button" onclick="location.href='@Url.Action("Create")'">Создать</button>
 </p>
 <table class="table" id="myTable">
     <thead>
@@ -28,26 +28,31 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Фамилия)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Имя)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Отчество)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Специальность.Наименование_специальности)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ID_врача">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ID_врача">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ID_врача">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Фамилия)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Имя)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Отчество)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Специальность.Наименование_специальности)
+                </td>
+                <td>
+                    <div style="margin-top: 10px;"></div>
+
+                    <div class="d-flex justify-content-end">
+                        <a asp-action="Edit" asp-route-id="@item.ID_врача" class="btn btn-success">Изменить</a> |
+                        <a asp-action="Details" asp-route-id="@item.ID_врача" class="btn btn-warning">Подробности</a> |
+                        <a asp-action="Delete" asp-route-id="@item.ID_врача" class="btn btn-danger">Удалить</a>
+                    </div>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

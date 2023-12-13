@@ -1,13 +1,13 @@
 ﻿@model Kursach_Voenkomat.Models.ОбразовательныеОрганизации
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Подробности";
 }
 
-<h1>Details</h1>
+<h1>Подробности</h1>
 
 <div>
-    <h4>ОбразовательныеОрганизации</h4>
+    <h4>Образовательные организации</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -31,6 +31,6 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.ID_образовательной_организации">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model?.ID_образовательной_организации" class="btn btn-primary">Изменить</a> |
+    <a asp-action="Index" class="btn btn-success">Вернуться к списку</a>
 </div>

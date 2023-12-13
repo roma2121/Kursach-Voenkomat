@@ -25,37 +25,32 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-
-
-
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     @if (User.Identity.IsAuthenticated)
                     {
                         var nameMappings = new Dictionary<string, string>
-                    {
-                    { "Vasily_Vasilie", "Василий Васильев" },
-                    { "Nikita_Nazarov", "Никита Назаров" },
-                    { "Kirill_Popov", "Крилл Попов" },
-                    { "Valeria_Leonova", "Валерия Леонова" },
-                    { "Adminchik", "Администратор" }
-                    };
+                        {
+                            { "Vasily_Vasilie", "Василий Васильев" },
+                            { "Nikita_Nazarov", "Никита Назаров" },
+                            { "Kirill_Popov", "Крилл Попов" },
+                            { "Valeria_Leonova", "Валерия Леонова" },
+                            { "Adminchik", "Администратор" }
+                        };
 
                         var roleMappings = new Dictionary<string, string>
-                    {
-                    { "voenkomat_worker", "Сотрудник военкомата" },
-                    { "MO", "Министерство обороны" },
-                    { "Medical_worker", "Медицинский работник" },
-                    { "State_services", "Госуслуги" },
-                    { "Administrator", "Администратор" },
-                    };
+                        {
+                            { "voenkomat_worker", "Сотрудник военкомата" },
+                            { "MO", "Министерство обороны" },
+                            { "Medical_worker", "Медицинский работник" },
+                            { "State_services", "Госуслуги" },
+                            { "Administrator", "Администратор" },
+                        };
 
                         string displayName = nameMappings.GetValueOrDefault(User.Identity.Name, User.Identity.Name);
                         string role = User.Claims.FirstOrDefault(c => c.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role")?.Value ?? "Роль не указана";
                         string displayRole = roleMappings.GetValueOrDefault(role, role);
 
                         <button class="btn btn-primary" id="menuToggleBtn">&#9776; Меню</button>
-
-                        <!-- Выезжающее меню -->
 
                         <div id="sidebar" class="sidebar">
                             <ul>

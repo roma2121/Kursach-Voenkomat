@@ -1,13 +1,13 @@
 ﻿@model IEnumerable<Kursach_Voenkomat.Models.ПрофессиональноПсихологическиеПоказателиГраждан>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Профессионально психологические показатели";
 }
 
-<h1>Index</h1>
+<h1>Профессионально психологические показатели</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <button type="button" class="create-button" onclick="location.href='@Url.Action("Create")'">Создать</button>
 </p>
 <table class="table" id="myTable">
     <thead>
@@ -31,29 +31,32 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Познавательные_способности)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Адаптационные_способности)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ПризывникФИО)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.категорияПрофессиональнойПригодности.Категории_профессиональной_пригодности)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.военноПрофессиональнаяНаправленность.Наименование_военно_профессиональной_направленности)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ID_ПП_показателей">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ID_ПП_показателей">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ID_ПП_показателей">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Познавательные_способности)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Адаптационные_способности)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ПризывникФИО)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.категорияПрофессиональнойПригодности.Категории_профессиональной_пригодности)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.военноПрофессиональнаяНаправленность.Наименование_военно_профессиональной_направленности)
+                </td>
+                <td>
+                    <div class="d-flex justify-content-end">
+                        <a asp-action="Edit" asp-route-id="@item.ID_ПП_показателей" class="btn btn-success">Изменить</a> |
+                        <a asp-action="Details" asp-route-id="@item.ID_ПП_показателей" class="btn btn-warning">Подробности</a> |
+                        <a asp-action="Delete" asp-route-id="@item.ID_ПП_показателей" class="btn btn-danger">Удалить</a>
+                    </div>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

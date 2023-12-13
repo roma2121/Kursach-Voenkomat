@@ -24,6 +24,71 @@ namespace Kursach_Voenkomat.Controllers
             _auditService = auditService;
         }
 
+
+        [HttpGet]
+        public async Task<IActionResult> FilterByDate(DateTime? startDate, DateTime? endDate)
+        {
+            ViewBag.StartDate = startDate?.ToString("yyyy-MM-dd");
+            ViewBag.EndDate = endDate?.ToString("yyyy-MM-dd");
+
+            if (startDate != null && endDate != null)
+            {
+                var filteredRecords = await _context.Приписные.Include(п => п.Призывник).Include(п => п.Решение)
+                    .Where(record => record.Дата_выдачи >= startDate && record.Дата_выдачи <= endDate)
+                    .ToListAsync();
+
+                return View(nameof(Index), filteredRecords);
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> ReportByMonth(DateTime? startDate, DateTime? endDate)
+        {
+            if (startDate != null && endDate != null)
+            {
+                var filteredRecords = await _context.Приписные.Include(п => п.Призывник).Include(п => п.Решение)
+                    .Where(record => record.Дата_выдачи >= startDate && record.Дата_выдачи <= endDate)
+                    .ToListAsync();
+
+                // Группировка записей по месяцам
+                var monthlyCounts = filteredRecords
+                    .GroupBy(record => new { record.Дата_выдачи.Year, record.Дата_выдачи.Month })
+                    .Select(group => new { Month = new DateTime(group.Key.Year, group.Key.Month, 1), Count = group.Count() })
+                    .OrderBy(item => item.Month)
+                    .ToList();
+
+                // Создание данных для графика
+                var months = monthlyCounts.Select(item => item.Month.ToString("yyyy-MM"));
+                var counts = monthlyCounts.Select(item => item.Count);
+
+                ViewBag.Months = months;
+                ViewBag.Counts = counts;
+
+                return View("~/Views/Reports/ReportByMonth.cshtml"); // Представление для отображения графика
+            }
+
+            else
+            {
+                // Логика для формирования графика из всех записей, если даты фильтрации не указаны
+                var allRecords = await _context.Приписные.Include(п => п.Призывник).Include(п => п.Решение).ToListAsync();
+
+                var monthlyCounts = allRecords
+                    .GroupBy(record => new { record.Дата_выдачи.Year, record.Дата_выдачи.Month })
+                    .Select(group => new { Month = new DateTime(group.Key.Year, group.Key.Month, 1), Count = group.Count() })
+                    .OrderBy(item => item.Month)
+                    .ToList();
+
+                var months = monthlyCounts.Select(item => item.Month.ToString("yyyy-MM"));
+                var counts = monthlyCounts.Select(item => item.Count);
+
+                ViewBag.Months = months;
+                ViewBag.Counts = counts;
+
+                return View("~/Views/Reports/ReportByMonth.cshtml"); // Представление для отображения графика
+            }
+        }
+
         // GET: Приписные
         [Authorize(Roles = "voenkomat_worker, MO, Administrator")]
         public async Task<IActionResult> Index()
@@ -83,6 +148,7 @@ namespace Kursach_Voenkomat.Controllers
         {
             if (ModelState.IsValid)
             {
+                приписные.Дата_выдачи = DateTime.Now;
                 _context.Add(приписные);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

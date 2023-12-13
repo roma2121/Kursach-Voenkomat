@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Kursach_Voenkomat.Data;
@@ -23,6 +19,53 @@ namespace Kursach_Voenkomat
             _context = context;
             _auditService = auditService;
         }
+
+        public async Task<IActionResult> ReportByMonth(DateTime? startDate, DateTime? endDate)
+        {
+            if (startDate != null && endDate != null)
+            {
+                var filteredRecords = await _context.Призывники.Include(п => п.Пол)
+                    .Where(record => record.Дата_регистрации >= startDate && record.Дата_регистрации <= endDate)
+                    .ToListAsync();
+
+                // Группировка записей по месяцам
+                var monthlyCounts = filteredRecords
+                    .GroupBy(record => new { record.Дата_регистрации.Year, record.Дата_регистрации.Month })
+                    .Select(group => new { Month = new DateTime(group.Key.Year, group.Key.Month, 1), Count = group.Count() })
+                    .OrderBy(item => item.Month)
+                    .ToList();
+
+                // Создание данных для графика
+                var months = monthlyCounts.Select(item => item.Month.ToString("yyyy-MM"));
+                var counts = monthlyCounts.Select(item => item.Count);
+
+                ViewBag.Months = months;
+                ViewBag.Counts = counts;
+
+                return View("~/Views/Reports/ReportByMonth.cshtml"); // Представление для отображения графика
+            }
+
+            else
+            {
+                // Логика для формирования графика из всех записей, если даты фильтрации не указаны
+                var allRecords = await _context.Призывники.Include(с => с.Пол).ToListAsync();
+
+                var monthlyCounts = allRecords
+                    .GroupBy(record => new { record.Дата_регистрации.Year, record.Дата_регистрации.Month })
+                    .Select(group => new { Month = new DateTime(group.Key.Year, group.Key.Month, 1), Count = group.Count() })
+                    .OrderBy(item => item.Month)
+                    .ToList();
+
+                var months = monthlyCounts.Select(item => item.Month.ToString("yyyy-MM"));
+                var counts = monthlyCounts.Select(item => item.Count);
+
+                ViewBag.Months = months;
+                ViewBag.Counts = counts;
+
+                return View("~/Views/Reports/ReportByMonth.cshtml"); // Представление для отображения графика
+            }
+        }
+
 
         [HttpGet]
         [AllowAnonymous]
@@ -81,22 +124,18 @@ namespace Kursach_Voenkomat
 
             if (record != null)
             {
-                // Создаем новый объект заявителя и заполняем его данными о посещении
                 Призывники призывник = new Призывники
                 {
                     Фамилия = record.Фамилия,
                     Имя = record.Имя,
                     Отчество = record.Отчество,
-                    Дата_рождения = record.Дата_рождения
-                    // Заполните другие поля заявителя, если они есть и могут быть извлечены из посещения
+                    Дата_рождения = record.Дата_рождения,
                 };
 
-                // Отправляем данные заявителя в представление Create заявителя
                 return View(призывник);
             }
             else
             {
-                // Если данные о посещении не найдены, выполните необходимые действия или верните сообщение об ошибке
                 return View();
             }
         }
@@ -104,10 +143,12 @@ namespace Kursach_Voenkomat
         // POST: Призывники/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID_призывника,Имя,Фамилия,Отчество,Дата_рождения,Номер_телефона,ID_пола")] Призывники призывники)
+        [Authorize(Roles = "voenkomat_worker, Administrator")]
+        public async Task<IActionResult> Create([Bind("ID_призывника,Имя,Фамилия,Отчество,Дата_рождения,Номер_телефона,ID_пола,Дата_регистрации")] Призывники призывники)
         {
             if (ModelState.IsValid)
             {
+                призывники.Дата_регистрации = DateTime.Now;
                 _context.Add(призывники);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -149,7 +190,7 @@ namespace Kursach_Voenkomat
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID_призывника,Имя,Фамилия,Отчество,Дата_рождения,Номер_телефона,ID_пола")] Призывники призывники)
+        public async Task<IActionResult> Edit(int id, [Bind("ID_призывника,Имя,Фамилия,Отчество,Дата_рождения,Номер_телефона,ID_пола,Дата_регистрации")] Призывники призывники)
         {
             if (id != призывники.ID_призывника)
             {

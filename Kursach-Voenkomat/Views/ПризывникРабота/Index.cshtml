@@ -1,13 +1,13 @@
 ﻿@model IEnumerable<Kursach_Voenkomat.Models.ПризывникРабота>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Призывник работа";
 }
 
-<h1>Index</h1>
+<h1>Призывнк работа</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <button type="button" class="create-button" onclick="location.href='@Url.Action("Create")'">Создать</button>
 </p>
 <table class="table" id="myTable">
     <thead>
@@ -22,20 +22,23 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ПризывникФИО)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Работа.Место_работы)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ID_призывник_работа">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ID_призывник_работа">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ID_призывник_работа">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ПризывникФИО)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Работа.Место_работы)
+                </td>
+                <td>
+                    <div class="d-flex justify-content-end">
+                        <a asp-action="Edit" asp-route-id="@item.ID_призывник_работа" class="btn btn-success">Изменить</a> |
+                        <a asp-action="Details" asp-route-id="@item.ID_призывник_работа" class="btn btn-warning">Подробности</a> |
+                        <a asp-action="Delete" asp-route-id="@item.ID_призывник_работа" class="btn btn-danger">Удалить</a>
+                    </div>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

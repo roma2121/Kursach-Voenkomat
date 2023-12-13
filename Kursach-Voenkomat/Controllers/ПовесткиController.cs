@@ -25,6 +25,103 @@ namespace Kursach_Voenkomat
         }
 
         [HttpGet]
+        public async Task<IActionResult> FilterByDate(DateTime? startDate, DateTime? endDate)
+        {
+            ViewBag.StartDate = startDate?.ToString("yyyy-MM-dd");
+            ViewBag.EndDate = endDate?.ToString("yyyy-MM-dd");
+
+            if (startDate != null && endDate != null)
+            {
+                var filteredRecords = await _context.Повестки.Include(п => п.Призывник).Include(п => п.статусЯвки).Include(п => п.типПовестки)
+                    .Where(record => record.Дата_явки >= startDate && record.Дата_явки <= endDate)
+                    .ToListAsync();
+
+                return View(nameof(Index), filteredRecords);
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+
+
+
+        public async Task<IActionResult> ReportByPovStatus(DateTime? startDate, DateTime? endDate)
+        {
+            if (startDate != null && endDate != null)
+            {
+                var filteredRecords = await _context.Повестки.Include(п => п.Призывник).Include(п => п.статусЯвки).Include(п => п.типПовестки)
+                            .Where(record => record.Дата_явки >= startDate && record.Дата_явки <= endDate)
+                            .ToListAsync();
+                var povStatusCounts = filteredRecords
+                    .GroupBy(pov => pov.статусЯвки.Наименование_статуса_явки ?? "Неизвестный статус")
+                    .Select(group => new
+                    {
+                        Status = group.Key,
+                        Count = group.Count(),
+                        Color = GetColorForStatus(group.Key),
+                        Label = group.Key
+                    })
+                    .ToList();
+
+                var Statuses = povStatusCounts.Select(item => item.Status);
+                var Counts = povStatusCounts.Select(item => item.Count);
+                var Colors = povStatusCounts.Select(item => item.Color);
+                var Labels = povStatusCounts.Select(item => item.Label);
+
+                ViewBag.Statuses = Statuses;
+                ViewBag.Counts = Counts;
+                ViewBag.Colors = Colors;
+                ViewBag.Labels = Labels;
+
+                return View("~/Views/Reports/ReportPOV.cshtml");
+            }
+
+            else
+            {
+                var allpovs = await _context.Повестки.Include(п => п.Призывник).Include(п => п.статусЯвки).Include(п => п.типПовестки).ToListAsync();
+
+                var povStatusCounts = allpovs
+                    .GroupBy(pov => pov.статусЯвки.Наименование_статуса_явки ?? "Неизвестный статус")
+                    .Select(group => new
+                    {
+                        Status = group.Key,
+                        Count = group.Count(),
+                        Color = GetColorForStatus(group.Key),
+                        Label = group.Key
+                    })
+                    .ToList();
+
+                var Statuses = povStatusCounts.Select(item => item.Status);
+                var Counts = povStatusCounts.Select(item => item.Count);
+                var Colors = povStatusCounts.Select(item => item.Color);
+                var Labels = povStatusCounts.Select(item => item.Label);
+
+                ViewBag.Statuses = Statuses;
+                ViewBag.Counts = Counts;
+                ViewBag.Colors = Colors;
+                ViewBag.Labels = Labels;
+
+                return View("~/Views/Reports/ReportPOV.cshtml");
+            }
+        }
+        private string GetColorForStatus(string status)
+        {
+            switch (status)
+            {
+                case "Прибыл в установленный срок":
+                    return "green";
+                case "Прибыл после установленного срока":
+                    return "yellow";
+                case "Отсутствовал":
+                    return "red";
+                case "-":
+                    return "black";
+                default:
+                    return "grey";
+            }
+        }
+
+        [HttpGet]
         [AllowAnonymous]
         public IActionResult AccessDenied()
         {
@@ -200,14 +297,14 @@ namespace Kursach_Voenkomat
             {
                 _context.Повестки.Remove(повестки);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ПовесткиExists(int id)
         {
-          return (_context.Повестки?.Any(e => e.ID_повестки == id)).GetValueOrDefault();
+            return (_context.Повестки?.Any(e => e.ID_повестки == id)).GetValueOrDefault();
         }
     }
 }

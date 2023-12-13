@@ -2,19 +2,25 @@
 
 @if (User.Identity.IsAuthenticated)
 {
-    <div class="text-center">
-        <h2>Список таблиц</h2>
-    </div>
+    <div class="center-site">
+        <div class="text-center">
+            <form action="/Призывники" method="get">
+                <button type="submit" class="btn btn-primary" style="background-color: #007bff; border-color: #007bff; border-radius: 20px;">
+                    <span style="display: block;">Зарегистрировать призывника</span>
+                    <span style="font-size: 0.8em; display: block;">(без записи)</span>
+                </button>
+            </form>
 
-    <ul class="table-list">
-        @foreach (var table in Model)
-        {
-            <li>
-                <span class="marker">&#8226;</span>
-                <a class="table-link" asp-controller="Home" asp-action="RedirectToTable" asp-route-tableName="@table.TableName">@table.DisplayName</a>
-            </li>
-        }
-    </ul>
+            <div style="margin-top: 10px;"></div>
+
+            <form action="/Record" method="get">
+                <button type="submit" class="btn btn-primary" style="background-color: #007bff; border-color: #007bff; border-radius: 20px;">
+                    <span style="display: block;">Зарегистрировать призывника</span>
+                    <span style="font-size: 0.8em; display: block;">(по записи)</span>
+                </button>
+            </form>
+        </div>
+    </div>
 }
 else
 {

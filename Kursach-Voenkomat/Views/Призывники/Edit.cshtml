@@ -1,10 +1,10 @@
 ﻿@model Kursach_Voenkomat.Models.Призывники
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Изменить";
 }
 
-<h1>Edit</h1>
+<h1>Изменить</h1>
 
 <h4>Призывники</h4>
 <hr />
@@ -13,6 +13,7 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="ID_призывника" />
+            <input type="hidden" asp-for="Дата_регистрации" />
             <div class="form-group">
                 <label asp-for="Имя" class="control-label"></label>
                 <input asp-for="Имя" class="form-control" />
@@ -43,15 +44,15 @@
                 <select asp-for="ID_пола" class="form-control" asp-items="@(ViewData["ID_пола"] as SelectList)"></select>
                 <span asp-validation-for="ID_пола" class="text-danger"></span>
             </div>
+
+            <div style="margin-top: 10px;"></div>
+
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Сохранить" class="btn btn-primary" /> |
+                <a asp-action="Index" class="btn btn-success">Вернуться к списку</a>
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {

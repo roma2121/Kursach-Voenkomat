@@ -1,13 +1,13 @@
 ﻿@model Kursach_Voenkomat.Models.ВидыСтатусовЯвки
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Подробности";
 }
 
-<h1>Details</h1>
+<h1>Подробности</h1>
 
 <div>
-    <h4>ВидыСтатусовЯвки</h4>
+    <h4>Виды статусов явки</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -18,7 +18,10 @@
         </dd>
     </dl>
 </div>
+
+<div style="margin-top: 10px;"></div>
+
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.ID_наименования_статуса_явки">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model?.ID_наименования_статуса_явки" class="btn btn-primary">Изменить</a> |
+    <a asp-action="Index" class="btn btn-success">Вернуться к списку</a>
 </div>

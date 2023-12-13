@@ -6,7 +6,29 @@
 
 <h1>Посещения</h1>
 
-<table class="table">
+<form asp-controller="Record" asp-action="FilterByDate" method="get">
+    <table border="0" cellspacing="5" cellpadding="5">
+        <tbody>
+            <tr>
+                <td>Дата начала:</td>
+                <td><input type="date" id="startDate" name="startDate" value="@ViewBag.StartDate"></td>
+            </tr>
+            <tr>
+                <td>Дата окончания:</td>
+                <td><input type="date" id="endDate" name="endDate" value="@ViewBag.EndDate"></td>
+            </tr>
+        </tbody>
+    </table>
+    <button type="submit" class="filtr-button">С фильтром</button>
+
+
+    <a asp-controller="Record" asp-action="FilterByDate" class="non-filtr-button">Без фильтра</a>
+
+
+    <a asp-controller="Record" asp-action="ReportByDay" asp-route-startDate="@ViewBag.StartDate" asp-route-endDate="@ViewBag.EndDate" class="graph-button">График</a>
+</form>
+
+<table id="myTable">
     <thead>
         <tr>
             <th>

@@ -1,12 +1,12 @@
 ﻿@model Kursach_Voenkomat.Models.Полы
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Удалить";
 }
 
-<h1>Delete</h1>
+<h1>Удалить</h1>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>Вы действительно хотите удалить эту запись?</h3>
 <div>
     <h4>Полы</h4>
     <hr />
@@ -21,7 +21,7 @@
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="ID_пола" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <input type="submit" value="Удалить" class="btn btn-danger" /> |
+        <a asp-action="Index" class="btn btn-success">Вернуться к списку</a>
     </form>
 </div>

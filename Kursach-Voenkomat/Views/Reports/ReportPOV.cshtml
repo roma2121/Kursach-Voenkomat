@@ -1,0 +1,59 @@
+﻿@{
+    ViewData["Title"] = "Отчет по повесткам";
+}
+
+<h1>Отчет по повесткам</h1>
+
+<canvas id="povChart" width="800" height="400"></canvas>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+    <script>
+        // Получаем данные из ViewBag
+        var povStatuses = @Html.Raw(Json.Serialize(ViewBag.Statuses));
+        var povCounts = @Html.Raw(Json.Serialize(ViewBag.Counts));
+        var povColors = @Html.Raw(Json.Serialize(ViewBag.Colors));
+        var povLabels = @Html.Raw(Json.Serialize(ViewBag.Labels));
+
+        // Создаем контекст для отрисовки графика
+        var ctx = document.getElementById('povChart').getContext('2d');
+
+        // Создаем данные для графика
+        var chartData = {
+            labels: povLabels,
+            datasets: [{
+                data: povCounts,
+                backgroundColor: povColors,
+                borderWidth: 1
+            }]
+        };
+
+        // Создаем настройки для графика
+        var chartOptions = {
+            plugins: {
+                legend: {
+                    display: false
+                },
+                datalabels: {
+                    color: 'black',
+                    anchor: 'end',
+                    align: 'top',
+                    font: {
+                        weight: 'bold'
+                    },
+                    formatter: function (value, context) {
+                        return povStatuses[context.dataIndex];
+                    }
+                }
+            }
+        };
+
+        // Создаем и отображаем график
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: chartData,
+            options: chartOptions
+        });
+    </script>
+}

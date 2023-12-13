@@ -42,7 +42,7 @@
         border-radius: 5px;
         cursor: pointer;
         display: block;
-        margin: 0 auto; /* Center the button */
+        margin: 0 auto;
     }
 
         input[type="submit"]:hover {
@@ -52,80 +52,150 @@
     .text-danger {
         color: red;
     }
+
+    #dateErrorMessage, #dayErrorMessage {
+        color: red;
+    }
+
+    #timePicker {
+        border: 1px solid black;
+        border-radius: 20px;
+    }
 </style>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-<script src="https://npmcdn.com/flatpickr/dist/l10n/ru.js"></script>
 
 <div class="center-site">
-    <div class="form-container">
-        <div class="text-center" style="color: #007bff;">
-            <h2>Запись на прием</h2>
-        </div>
-
-        <div style="margin-top: 10px;"></div>
-
-
-        <form asp-controller="RecordModels" asp-action="Index" method="post">
-            <div class="form-group">
-                <label asp-for="Фамилия"></label>
-                <input asp-for="Фамилия" class="form-control" />
-                <span asp-validation-for="Фамилия" class="text-danger"></span>
+    <div class="row justify-content-center">
+        <div class="form-container">
+            <div class="text-center" style="color: #007bff;">
+                <h2>Запись на прием</h2>
             </div>
-            <div class="form-group">
-                <label asp-for="Имя"></label>
-                <input asp-for="Имя" class="form-control" />
-                <span asp-validation-for="Имя" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Отчество"></label>
-                <input asp-for="Отчество" class="form-control" />
-                <span asp-validation-for="Отчество" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Дата_рождения"></label>
-                <input asp-for="Дата_рождения" class="form-control" type="date" required>
-                <span asp-validation-for="Дата_рождения" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Дата_посещения"></label>
-                <input id="datetimePicker" class="form-control" type="text" readonly required>
-                <span asp-validation-for="Дата_посещения" class="text-danger"></span>
-            </div>
-            <script>
-                flatpickr("#datetimePicker", {
-                    enableTime: true,
-                    dateFormat: "Y-m-d H:i",
-                    minDate: "today",
-                    time_24hr: true,
-                    inline: true,
-                    locale: "ru",
-                    minTime: "09:00",
-                    maxTime: "15:00",
-                    minuteIncrement: 15,
-                    disable: [
-                        function (date) {
-                            const dayOfWeek = date.getDay();
-                            return (dayOfWeek === 0 || dayOfWeek === 6);
-                        }
-                    ],
-                    onChange: function (selectedDates, dateStr, instance) {
-                        // Здесь вы можете обработать выбранную дату и время
-                        // Например, обновить связанное поле скрытым input, используя JavaScript
-                        // Например: document.getElementById("СкрытоеПоле").value = dateStr;
 
-                        // Сворачиваем поле выбора даты
-                        instance.close();
-                    }
-                });
-            </script>
+            <div style="margin-top: 10px;"></div>
 
-
-            <div class="text-center">
+            <form asp-controller="RecordModels" asp-action="Index" method="post">
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary" style="background-color: #007bff; border-color: #007bff; border-radius: 20px;">Отправить заявление</button>
+                    <label asp-for="Фамилия"></label>
+                    <input asp-for="Фамилия" class="form-control" />
+                    <span asp-validation-for="Фамилия" class="text-danger"></span>
                 </div>
-            </div>
-        </form>
+                <div class="form-group">
+                    <label asp-for="Имя"></label>
+                    <input asp-for="Имя" class="form-control" />
+                    <span asp-validation-for="Имя" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Отчество"></label>
+                    <input asp-for="Отчество" class="form-control" />
+                    <span asp-validation-for="Отчество" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Дата_рождения"></label>
+                    <input asp-for="Дата_рождения" class="form-control" type="date" required>
+                    <span asp-validation-for="Дата_рождения" class="text-danger"></span>
+                </div>
+
+                <input type="hidden" id="dateTimePicker" name="Дата_посещения" />
+
+                <label for="datePicker">Выберите дату:</label>
+                <input type="date" id="datePicker" required>
+                <p id="dateErrorMessage"></p>
+
+                <label for="timePicker">Выберите время:</label>
+                <select id="timePicker" required>
+                    <optgroup label="09:00 - 10:00">
+                        <option value="09:00">09:00</option>
+                        <option value="09:15">09:15</option>
+                        <option value="09:30">09:30</option>
+                        <option value="09:45">09:45</option>
+                    </optgroup>
+                    <optgroup label="10:00 - 11:00">
+                        <option value="10:00">10:00</option>
+                        <option value="10:15">10:15</option>
+                        <option value="10:30">10:30</option>
+                        <option value="10:45">10:45</option>
+                    </optgroup>
+                    <optgroup label="11:00 - 12:00">
+                        <option value="11:00">11:00</option>
+                        <option value="11:15">11:15</option>
+                        <option value="11:30">11:30</option>
+                        <option value="11:45">11:45</option>
+                    </optgroup>
+                    <optgroup label="12:00 - 13:00">
+                        <option value="12:00">12:00</option>
+                        <option value="12:15">12:15</option>
+                        <option value="12:30">12:30</option>
+                        <option value="12:45">12:45</option>
+                    </optgroup>
+                    <optgroup label="13:00 - 14:00">
+                        <option value="13:00">13:00</option>
+                        <option value="13:15">13:15</option>
+                        <option value="13:30">13:30</option>
+                        <option value="13:45">13:45</option>
+                    </optgroup>
+                    <optgroup label="14:00 - 15:00">
+                        <option value="14:00">14:00</option>
+                        <option value="14:15">14:15</option>
+                        <option value="14:30">14:30</option>
+                        <option value="14:45">14:45</option>
+                    </optgroup>
+                </select>
+
+                <div style="margin-top: 10px;"></div>
+
+                <div class="text-center">
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary" style="background-color: #007bff; border-color: #007bff; border-radius: 20px;">Отправить заявление</button>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const datePicker = document.getElementById('datePicker');
+        const timePicker = document.getElementById('timePicker');
+        const dateTimePicker = document.getElementById('dateTimePicker');
+        const dateErrorMessage = document.getElementById('dateErrorMessage');
+
+        datePicker.addEventListener('input', function () {
+            const selectedDate = new Date(datePicker.value);
+            const dayOfWeek = selectedDate.getDay();
+
+            // Ограничиваем выбор только будними днями (понедельник - пятница)
+            if (dayOfWeek === 0 || dayOfWeek === 6) {
+                dateErrorMessage.textContent = 'Выберите будний день.';
+                datePicker.value = '';
+                dayErrorMessage.textContent = 'Выберите будний день. Выбор невозможен.';
+                datePicker.value = '';
+                datePicker.disabled = true; // Запрещаем выбор даты
+            } else {
+                dateErrorMessage.textContent = ''; // Очищаем сообщение, если выбрана корректная дата
+                dayErrorMessage.textContent = ''; // Очищаем уведомление о выборе неверного дня
+                datePicker.disabled = false; // Разрешаем выбор даты
+
+                // Обновляем значение скрытого поля (Дата_посещения) при выборе даты
+                updateDateTimePicker();
+            }
+        });
+
+        timePicker.addEventListener('input', function () {
+            // Обновляем значение скрытого поля (Дата_посещения) при выборе времени
+            updateDateTimePicker();
+        });
+
+        function updateDateTimePicker() {
+            const selectedDate = new Date(datePicker.value);
+            const selectedTime = timePicker.value;
+
+            // Обновляем значение скрытого поля в формате "ГГГГ-ММ-ДДTЧЧ:ММ"
+            dateTimePicker.value = `${selectedDate.getFullYear()}-${padNumber(selectedDate.getMonth() + 1)}-${padNumber(selectedDate.getDate())}T${selectedTime}`;
+        }
+
+        function padNumber(number) {
+            return number.toString().padStart(2, '0');
+        }
+    });
+</script>

@@ -44,7 +44,7 @@ namespace Kursach_Voenkomat.Controllers
             if (записьСВыбраннойДатой != null)
             {
                 // Дата уже занята, возвращаем ошибку
-                ModelState.AddModelError("Датапосещения", "Выбранная дата уже занята");
+                ModelState.AddModelError("Дата_посещения", "Выбранная дата уже занята");
             }
 
             if (ModelState.IsValid)
@@ -59,8 +59,12 @@ namespace Kursach_Voenkomat.Controllers
         }
         public IActionResult Confirmation()
         {
-            // Получение последней записи из базы данных
-            var последняяЗапись = _context.RecordModel.OrderByDescending(p => p.Дата_посещения).FirstOrDefault();
+            // Получение максимального ID из базы данных
+            var последнийИндекс = _context.RecordModel.Max(p => p.ID_посещения);
+
+            // Получение записи по максимальному ID
+            var последняяЗапись = _context.RecordModel.FirstOrDefault(p => p.ID_посещения == последнийИндекс);
+
 
             // Получение выбранной даты, если последняя запись существует
             DateTime выбраннаяДата = последняяЗапись != null ? последняяЗапись.Дата_посещения : DateTime.Now; // DateTime.Now - просто для примера, может быть другой дефолтной датой

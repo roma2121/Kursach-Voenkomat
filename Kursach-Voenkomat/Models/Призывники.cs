@@ -29,6 +29,8 @@ namespace Kursach_Voenkomat.Models
         [RegularExpression(@"^(\+7|8)\d{10}$", ErrorMessage = "Неправильный формат номера телефона")]
         public string? Номер_телефона { get; set; }
 
+        public DateTime Дата_регистрации { get; set; }
+
         // Навигационное свойство
         public Полы? Пол {  get; set; }
 

@@ -1,10 +1,10 @@
 ﻿@model Kursach_Voenkomat.Models.Работа
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Изменить";
 }
 
-<h1>Edit</h1>
+<h1>Изменить</h1>
 
 <h4>Работа</h4>
 <hr />
@@ -18,15 +18,15 @@
                 <span asp-validation-for="Место_работы" class="text-danger"></span>
             </div>
             <input type="hidden" asp-for="ID_работы" />
+
+            <div style="margin-top: 10px;"></div>
+
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Сохранить" class="btn btn-primary" /> |
+                <a asp-action="Index" class="btn btn-success">Вернуться к списку</a>
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {

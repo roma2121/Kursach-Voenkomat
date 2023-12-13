@@ -1,14 +1,19 @@
 ﻿@model IEnumerable<Kursach_Voenkomat.Models.Призывники>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Призывники";
 }
 
-<h1>Index</h1>
+<h1>Призывники</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<div class="d-flex">
+    <p class="mr-2">
+        <button type="button" class="create-button" onclick="location.href='@Url.Action("Create")'">Создать</button>
+        <button type="button" class="graph-button ml-2" onclick="location.href='@Url.Action("ReportByMonth", new { startDate = ViewBag.StartDate, endDate = ViewBag.EndDate })'">График</button>
+    </p>
+</div>
+
+
 <table class="table" id="myTable">
     <thead>
         <tr>
@@ -56,9 +61,11 @@
                     @Html.DisplayFor(modelItem => item.Пол.Пол)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.ID_призывника">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.ID_призывника">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.ID_призывника">Delete</a>
+                    <div class="d-flex justify-content-end">
+                        <a asp-action="Edit" asp-route-id="@item.ID_призывника" class="btn btn-success mr-2">Изменить</a>
+                        <a asp-action="Details" asp-route-id="@item.ID_призывника" class="btn btn-warning mr-2">Подробности</a>
+                        <a asp-action="Delete" asp-route-id="@item.ID_призывника" class="btn btn-danger mr-2">Удалить</a>
+                    </div>
                 </td>
             </tr>
         }

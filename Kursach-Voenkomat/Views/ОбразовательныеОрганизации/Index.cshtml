@@ -1,13 +1,13 @@
 ﻿@model IEnumerable<Kursach_Voenkomat.Models.ОбразовательныеОрганизации>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Образовательные организации";
 }
 
-<h1>Index</h1>
+<h1>Образовательные организации</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <button type="button" class="create-button" onclick="location.href='@Url.Action("Create")'">Создать</button>
 </p>
 <table class="table" id="myTable">
     <thead>
@@ -25,23 +25,26 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Наименование_образовательной_организации)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Адрес_образовательной_организации)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.типОбразовательнойОрганизации.Наименование_типа_образовательной_организации)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ID_образовательной_организации">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ID_образовательной_организации">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ID_образовательной_организации">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Наименование_образовательной_организации)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Адрес_образовательной_организации)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.типОбразовательнойОрганизации.Наименование_типа_образовательной_организации)
+                </td>
+                <td>
+                    <div class="d-flex justify-content-end">
+                        <a asp-action="Edit" asp-route-id="@item.ID_образовательной_организации" class="btn btn-success">Изменить</a> |
+                        <a asp-action="Details" asp-route-id="@item.ID_образовательной_организации" class="btn btn-warning">Подробности</a> |
+                        <a asp-action="Delete" asp-route-id="@item.ID_образовательной_организации" class="btn btn-danger">Удалить</a>
+                    </div>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

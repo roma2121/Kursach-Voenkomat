@@ -1,14 +1,41 @@
 ﻿@model IEnumerable<Kursach_Voenkomat.Models.Приписные>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Приписные";
 }
 
-<h1>Index</h1>
+<style>
+    .mr-2 {
+        margin-right: 5px;
+    }
+</style>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<h1>Приписные</h1>
+
+<div class="d-flex">
+    <form asp-controller="Приписные" asp-action="FilterByDate" method="get" class="mr-2">
+        <div class="d-flex">
+            <button type="button" class="create-button mr-2" onclick="location.href='@Url.Action("Create")'">Создать</button>
+            <button type="submit" class="filtr-button mr-2">С фильтром</button>
+            <button type="button" class="non-filtr-button mr-2" onclick="location.href='@Url.Action("FilterByDate")'">Без фильтра</button>
+            <button type="button" class="graph-button mr-2" onclick="location.href='@Url.Action("ReportByMonth", new { startDate = ViewBag.StartDate, endDate = ViewBag.EndDate })'">График</button>
+        </div>
+
+        <div class="row ml-auto">
+            <div class="col-md-6">
+                <label for="startDate">Дата начала:</label>
+                <input type="date" id="startDate" name="startDate" value="@ViewBag.StartDate" class="form-control">
+            </div>
+            <div class="col-md-6">
+                <label for="endDate">Дата окончания:</label>
+                <input type="date" id="endDate" name="endDate" value="@ViewBag.EndDate" class="form-control">
+            </div>
+        </div>
+
+        <div style="margin-top: 10px;"></div>
+    </form>
+</div>
+
 <table class="table" id="myTable">
     <thead>
         <tr>
@@ -18,24 +45,33 @@
             <th>
                 @Html.DisplayNameFor(model => model.Решение)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Дата_выдачи)
+            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Призывник.ПризывникФИО)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Решение.Решение)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ID_приписного">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ID_приписного">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ID_приписного">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Призывник.ПризывникФИО)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Решение.Решение)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Дата_выдачи)
+                </td>
+                <td>
+                    <div class="d-flex justify-content-end">
+                        <a asp-action="Edit" asp-route-id="@item.ID_приписного" class="btn btn-success">Изменить</a> |
+                        <a asp-action="Details" asp-route-id="@item.ID_приписного" class="btn btn-warning">Подробности</a> |
+                        <a asp-action="Delete" asp-route-id="@item.ID_приписного" class="btn btn-danger">Удалить</a>
+                    </div>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
